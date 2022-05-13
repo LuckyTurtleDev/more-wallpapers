@@ -6,6 +6,8 @@ mod linux;
 #[cfg(all(unix, not(target_os = "macos")))]
 use crate::linux::*;
 
+mod wallpaper_crate;
+
 #[derive(Clone, Debug, Educe)]
 #[educe(Default)]
 pub enum Mode {
@@ -25,7 +27,7 @@ pub enum Mode {
 #[derive(Clone, Debug)]
 pub enum Enviroment {
 	X11,
-	Backup,
+	WALLPAPER_CRATE,
 }
 
 #[derive(Clone, Debug)]
@@ -38,7 +40,6 @@ pub struct Screen {
 #[derive(Clone, Debug)]
 pub struct WallpaperBuilder {
 	screens: Vec<Screen>,
-	screen_count: usize,
 	enviroment: Enviroment,
 }
 
@@ -48,7 +49,7 @@ impl WallpaperBuilder {
 	}
 
 	pub fn screen_count(&self) -> usize {
-		self.screen_count
+		self.screens.len()
 	}
 
 	pub fn set_wallapers<F>(mut self, f: F)
@@ -61,6 +62,6 @@ impl WallpaperBuilder {
 			screen.wallpaper = Some(tupple.0);
 			screen.mode = Some(tupple.1)
 		}
-		set_screens(self.screens);
+		set_screens_from_builder(self);
 	}
 }

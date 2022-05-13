@@ -8,4 +8,5 @@ edition = "2021"
 
 [dependencies]
 educe = "0.4"
+wallpaper = "3.2"
 xrandr = "0.1"
