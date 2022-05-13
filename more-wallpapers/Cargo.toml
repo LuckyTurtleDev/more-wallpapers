@@ -1,0 +1,11 @@
+[package]
+name = "more-wallpapers"
+version = "0.0.0"
+workspace = ".."
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+educe = "0.4"
+xrandr = "0.1"

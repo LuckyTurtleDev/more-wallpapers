@@ -1,0 +1,9 @@
+[package]
+name = "mwallpapers"
+version = "0.0.0"
+workspace = ".."
+edition = "2021"
+
+
+[dependencies]
+more-wallpapers = { path = "../more-wallpapers" }
