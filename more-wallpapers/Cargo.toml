@@ -8,5 +8,6 @@ edition = "2021"
 
 [dependencies]
 educe = "0.4"
+rand = { version = "0.8.5", features = ["alloc"] }
 wallpaper = "3.2"
 xrandr = "0.1"

@@ -1,5 +1,6 @@
 #![warn(unreachable_pub)]
 use educe::Educe;
+use rand::{prelude::IteratorRandom, seq::SliceRandom};
 
 #[cfg(all(unix, not(target_os = "macos")))]
 mod linux;
@@ -64,4 +65,33 @@ impl WallpaperBuilder {
 		}
 		set_screens_from_builder(self);
 	}
+}
+
+pub fn set_wallpapers_from_vec<T>(wallpapers: Vec<T>, random: bool)
+where
+	T: Into<String>,
+	T: Clone,
+{
+	let builder = WallpaperBuilder::new();
+	let chosen_wallpapers: Vec<T> = if random {
+		let mut rng = rand::thread_rng();
+		let wallpapers = if wallpapers.len() < builder.screen_count() {
+			//extend vec to match length of screen_count
+			let mut new_wallpapers = Vec::new();
+			while new_wallpapers.len() < builder.screen_count() {
+				let count = (builder.screen_count() - new_wallpapers.len()).min(wallpapers.len());
+				let mut add = wallpapers.clone().into_iter().choose_multiple(&mut rng, count);
+				new_wallpapers.append(&mut add);
+			}
+			new_wallpapers
+		} else {
+			wallpapers
+		};
+		let mut choose_wallpapers = wallpapers.into_iter().choose_multiple(&mut rng, builder.screen_count());
+		choose_wallpapers.shuffle(&mut rng);
+		choose_wallpapers
+	} else {
+		wallpapers
+	};
+	builder.set_wallapers(|i, _, _| (chosen_wallpapers[i % chosen_wallpapers.len()].clone().into(), Mode::Crop))
 }
