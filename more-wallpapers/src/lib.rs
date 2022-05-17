@@ -1,5 +1,9 @@
 #![warn(unreachable_pub)]
+#![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
+
 use educe::Educe;
+
+#[cfg(feature = "rand")]
 use rand::{prelude::IteratorRandom, seq::SliceRandom};
 
 #[cfg(all(unix, not(target_os = "macos")))]
@@ -65,21 +69,27 @@ impl WallpaperBuilder {
 		}
 		set_screens_from_builder(self);
 	}
-}
 
-pub fn set_wallpapers_from_vec<T>(wallpapers: Vec<T>, random: bool)
-where
-	T: Into<String>,
-	T: Clone,
-{
-	let builder = WallpaperBuilder::new();
-	let chosen_wallpapers: Vec<T> = if random {
+	pub fn set_wallpapers_from_vec<T>(self, wallpapers: Vec<T>)
+	where
+		T: Into<String>,
+		T: Clone,
+	{
+		self.set_wallapers(|i, _, _| (wallpapers[i % wallpapers.len()].clone().into(), Mode::Crop))
+	}
+
+	#[cfg(feature = "rand")]
+	pub fn set_random_wallpapers_from_vec<T>(self, wallpapers: Vec<T>)
+	where
+		T: Into<String>,
+		T: Clone,
+	{
 		let mut rng = rand::thread_rng();
-		let wallpapers = if wallpapers.len() < builder.screen_count() {
+		let wallpapers = if wallpapers.len() < self.screen_count() {
 			//extend vec to match length of screen_count
 			let mut new_wallpapers = Vec::new();
-			while new_wallpapers.len() < builder.screen_count() {
-				let count = (builder.screen_count() - new_wallpapers.len()).min(wallpapers.len());
+			while new_wallpapers.len() < self.screen_count() {
+				let count = (self.screen_count() - new_wallpapers.len()).min(wallpapers.len());
 				let mut add = wallpapers.clone().into_iter().choose_multiple(&mut rng, count);
 				new_wallpapers.append(&mut add);
 			}
@@ -87,11 +97,27 @@ where
 		} else {
 			wallpapers
 		};
-		let mut choose_wallpapers = wallpapers.into_iter().choose_multiple(&mut rng, builder.screen_count());
+		let mut choose_wallpapers = wallpapers.into_iter().choose_multiple(&mut rng, self.screen_count());
 		choose_wallpapers.shuffle(&mut rng);
-		choose_wallpapers
-	} else {
-		wallpapers
-	};
-	builder.set_wallapers(|i, _, _| (chosen_wallpapers[i % chosen_wallpapers.len()].clone().into(), Mode::Crop))
+		self.set_wallpapers_from_vec(choose_wallpapers)
+	}
+}
+
+pub fn set_wallpapers_from_vec<T>(wallpapers: Vec<T>)
+where
+	T: Into<String>,
+	T: Clone,
+{
+	let builder = WallpaperBuilder::new();
+	builder.set_wallpapers_from_vec(wallpapers);
+}
+
+#[cfg(feature = "rand")]
+pub fn set_random_wallpapers_from_vec<T>(wallpapers: Vec<T>)
+where
+	T: Into<String>,
+	T: Clone,
+{
+	let builder = WallpaperBuilder::new();
+	builder.set_wallpapers_from_vec(wallpapers);
 }

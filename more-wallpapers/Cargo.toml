@@ -8,6 +8,12 @@ edition = "2021"
 
 [dependencies]
 educe = "0.4"
-rand = { version = "0.8.5", features = ["alloc"] }
+rand = { version = "0.8.5", features = ["alloc"], optional = true }
 wallpaper = "3.2"
 xrandr = "0.1"
+
+[build-dependencies]
+rustc_version = "0.4.0"
+
+[package.metadata.docs.rs]
+all-features = true
