@@ -1,6 +1,27 @@
+use clap::Parser;
 use more_wallpapers::{Mode, WallpaperBuilder};
 
-fn main() {
+#[derive(Debug, Parser)]
+enum Opt {
+	/// list avaible screens and othe iformation
+	List,
+}
+fn list() {
 	let builder = WallpaperBuilder::new();
-	builder.set_wallapers(|i, len, screen| ("/usr/share/wallpapers/Altai/contents/images/5120x2880.png".into(), Mode::Crop))
+	println!("enviroment: {}", builder.enviroment());
+	println!(
+		"support various wallpaper: {}",
+		builder.enviroment().support_various_wallpaper()
+	);
+	print!("activescreens:");
+	for screen in builder.screens() {
+		print!(" {screen}");
+	}
+	println!();
+}
+
+fn main() {
+	match Opt::parse() {
+		Opt::List => list(),
+	}
 }

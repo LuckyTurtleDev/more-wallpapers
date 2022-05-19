@@ -2,6 +2,7 @@
 #![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
 
 use educe::Educe;
+use strum_macros::Display;
 
 #[cfg(feature = "rand")]
 use rand::{prelude::IteratorRandom, seq::SliceRandom};
@@ -13,7 +14,8 @@ use crate::linux::*;
 
 mod wallpaper_crate;
 
-#[derive(Clone, Debug, Educe)]
+#[derive(Debug, Clone, Copy, Educe, Display, PartialEq, Eq)]
+#[strum(serialize_all = "lowercase")]
 #[educe(Default)]
 pub enum Mode {
 	///center image witout zooming. Image is may not full visible. Empty space is filled with black.
@@ -29,10 +31,20 @@ pub enum Mode {
 	Tile,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]
+#[strum(serialize_all = "lowercase")]
 pub enum Enviroment {
 	X11,
 	WALLPAPER_CRATE,
+}
+impl Enviroment {
+	///return true, if the current enviroment does support various wallpaper on each screen
+	pub fn support_various_wallpaper(&self) -> bool {
+		match self {
+			Self::X11 => true,
+			Self::WALLPAPER_CRATE => false,
+		}
+	}
 }
 
 #[derive(Clone, Debug)]
@@ -42,6 +54,8 @@ pub struct Screen {
 	mode: Option<Mode>,
 }
 
+///Builder for advance Wallpaper settings.
+///This struct should not be stored for a long time, because it can become outdated if the user connect or disconnect monitors or change the Display settings.
 #[derive(Clone, Debug)]
 pub struct WallpaperBuilder {
 	screens: Vec<Screen>,
@@ -53,33 +67,53 @@ impl WallpaperBuilder {
 		get_builder()
 	}
 
+	///Return the count of active screens. This does not include disable screens.
 	pub fn screen_count(&self) -> usize {
 		self.screens.len()
 	}
 
+	///Return the current Destkop enviroment.
+	pub fn enviroment(&self) -> Enviroment {
+		self.enviroment
+	}
+
+	pub fn screens(&self) -> Vec<String> {
+		let mut screens = Vec::new();
+		for screen in &self.screens {
+			screens.push(screen.name.clone())
+		}
+		screens
+	}
+
+	///Set background to wallpapers, witch will selected by the given closure.
+	///The index oft screen and the current screen are passed to the closure.
 	pub fn set_wallapers<F>(mut self, f: F)
 	where
-		F: Fn(usize, usize, &Screen) -> (String, Mode),
+		F: Fn(usize, &Screen) -> (String, Mode),
 	{
-		let len = self.screens.len();
 		for (i, screen) in self.screens.iter_mut().enumerate() {
-			let tupple = f(i, len, &screen);
+			let tupple = f(i, &screen);
 			screen.wallpaper = Some(tupple.0);
 			screen.mode = Some(tupple.1)
 		}
 		set_screens_from_builder(self);
 	}
 
-	pub fn set_wallpapers_from_vec<T>(self, wallpapers: Vec<T>)
+	///Set the background of all screens to the wallpapers of `wallpapers`.
+	///The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`
+	pub fn set_wallpapers_from_vec<T>(self, wallpapers: Vec<T>, mode: Mode)
 	where
 		T: Into<String>,
 		T: Clone,
 	{
-		self.set_wallapers(|i, _, _| (wallpapers[i % wallpapers.len()].clone().into(), Mode::Crop))
+		self.set_wallapers(|i, _| (wallpapers[i % wallpapers.len()].clone().into(), mode))
 	}
 
+	///Like [`Self::set_wallpapers_from_vec`],
+	///but map the wallpapers randomly to the screens.
+	///Selecting the same wallpaper multiple time will be avoid, if this is possible.
 	#[cfg(feature = "rand")]
-	pub fn set_random_wallpapers_from_vec<T>(self, wallpapers: Vec<T>)
+	pub fn set_random_wallpapers_from_vec<T>(self, wallpapers: Vec<T>, mode: Mode)
 	where
 		T: Into<String>,
 		T: Clone,
@@ -99,25 +133,25 @@ impl WallpaperBuilder {
 		};
 		let mut choose_wallpapers = wallpapers.into_iter().choose_multiple(&mut rng, self.screen_count());
 		choose_wallpapers.shuffle(&mut rng);
-		self.set_wallpapers_from_vec(choose_wallpapers)
+		self.set_wallpapers_from_vec(choose_wallpapers, mode)
 	}
 }
 
-pub fn set_wallpapers_from_vec<T>(wallpapers: Vec<T>)
+pub fn set_wallpapers_from_vec<T>(wallpapers: Vec<T>, mode: Mode)
 where
 	T: Into<String>,
 	T: Clone,
 {
 	let builder = WallpaperBuilder::new();
-	builder.set_wallpapers_from_vec(wallpapers);
+	builder.set_wallpapers_from_vec(wallpapers, mode);
 }
 
 #[cfg(feature = "rand")]
-pub fn set_random_wallpapers_from_vec<T>(wallpapers: Vec<T>)
+pub fn set_random_wallpapers_from_vec<T>(wallpapers: Vec<T>, mode: Mode)
 where
 	T: Into<String>,
 	T: Clone,
 {
 	let builder = WallpaperBuilder::new();
-	builder.set_wallpapers_from_vec(wallpapers);
+	builder.set_wallpapers_from_vec(wallpapers, mode);
 }
