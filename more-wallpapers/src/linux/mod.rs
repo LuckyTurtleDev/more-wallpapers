@@ -31,8 +31,8 @@ pub(crate) fn get_builder() -> WallpaperBuilder {
 
 pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) {
 	match builder.enviroment {
+		Enviroment::KDE => kde::set_screens(builder.screens),
 		Enviroment::X11 => x11::set_screens(builder.screens),
 		Enviroment::WALLPAPER_CRATE => wallpaper_crate::set_screens(builder.screens),
-		_ => panic!(),
 	}
 }
