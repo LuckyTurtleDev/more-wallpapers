@@ -34,6 +34,7 @@ pub enum Mode {
 #[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
 pub enum Enviroment {
+	KDE,
 	X11,
 	WALLPAPER_CRATE,
 }
@@ -41,6 +42,7 @@ impl Enviroment {
 	///return true, if the current enviroment does support various wallpaper on each screen
 	pub fn support_various_wallpaper(&self) -> bool {
 		match self {
+			Self::KDE => true,
 			Self::X11 => true,
 			Self::WALLPAPER_CRATE => false,
 		}
