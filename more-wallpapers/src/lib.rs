@@ -7,12 +7,20 @@ use strum_macros::Display;
 #[cfg(feature = "rand")]
 use rand::{prelude::IteratorRandom, seq::SliceRandom};
 
-#[cfg(all(unix, not(target_os = "macos")))]
+#[cfg(target_os = "linux")]
 mod linux;
-#[cfg(all(unix, not(target_os = "macos")))]
+#[cfg(target_os = "linux")]
 use crate::linux::*;
 
-mod wallpaper_crate;
+#[cfg(target_os = "windows")]
+mod windows;
+#[cfg(target_os = "windows")]
+use crate::windows::*;
+
+#[cfg(target_os = "macos")]
+mod macos;
+#[cfg(target_os = "macos")]
+use crate::macos::*;
 
 #[derive(Debug, Clone, Copy, Educe, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
@@ -34,17 +42,21 @@ pub enum Mode {
 #[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
 pub enum Enviroment {
-	KDE,
+	Kde,
+	LinuxWallpaperCrate,
+	MacOS,
+	Windows,
 	X11,
-	WALLPAPER_CRATE,
 }
 impl Enviroment {
 	///return true, if the current enviroment does support various wallpaper on each screen
 	pub fn support_various_wallpaper(&self) -> bool {
 		match self {
-			Self::KDE => true,
+			Self::Kde => true,
+			Self::LinuxWallpaperCrate => false,
+			Self::MacOS => false,
+			Self::Windows => false,
 			Self::X11 => true,
-			Self::WALLPAPER_CRATE => false,
 		}
 	}
 }
