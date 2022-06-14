@@ -1,9 +1,9 @@
-use crate::{Mode, Screen};
+use crate::{error::CommandError, Mode, Screen};
 use std::process::Command;
 use xrandr;
 
-pub(crate) fn get_screens() -> Vec<Screen> {
-	let monitors = xrandr::XHandle::open().unwrap().monitors().unwrap(); //TODO: Error Handling
+pub(crate) fn get_screens() -> Result<Vec<Screen>, xrandr::XrandrError> {
+	let monitors = xrandr::XHandle::open()?.monitors()?;
 	let mut screens = Vec::new();
 	for monitor in monitors {
 		if monitor.is_automatic {
@@ -14,10 +14,10 @@ pub(crate) fn get_screens() -> Vec<Screen> {
 			})
 		}
 	}
-	screens
+	Ok(screens)
 }
 
-pub(crate) fn set_screens(screens: Vec<Screen>) {
+pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), CommandError> {
 	let mut command = Command::new("xwallpaper");
 	for screen in screens {
 		let mode = match screen.mode.unwrap() {
@@ -29,5 +29,14 @@ pub(crate) fn set_screens(screens: Vec<Screen>) {
 		};
 		command.args(["--output", &screen.name, &format!("--{mode}"), &screen.wallpaper.unwrap()]);
 	}
-	command.spawn();
+	let out = command.output()?;
+	if !out.status.success() {
+		let error = CommandError::CommandStatus {
+			command: "xrandr",
+			exit_code: out.status.code().unwrap(),
+			stderr: out.stderr,
+		};
+		return Err(error);
+	};
+	Ok(())
 }

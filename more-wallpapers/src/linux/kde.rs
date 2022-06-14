@@ -1,30 +1,30 @@
-use crate::{Mode, Screen};
+use crate::{error::WallpaperError, Mode, Screen};
 use dbus::blocking::Connection;
 use serde::Deserialize;
 use serde_json;
 use std::time::Duration;
 
 #[derive(Deserialize)]
-struct KDE_DESKTOP {
+struct KdeDesktop {
 	screen: i32,
 	id: u32,
 }
 
-fn plasmashell(command: &str) -> String {
+fn plasmashell(command: &str) -> Result<String, dbus::Error> {
 	let destination = "org.kde.plasmashell";
 	let interface = "org.kde.PlasmaShell";
 	let path = "/PlasmaShell";
 	let method = "evaluateScript";
 	let args = (command,);
 	let timeout = Duration::from_millis(5000);
-	let conn = Connection::new_session().unwrap();
+	let conn = Connection::new_session()?;
 	let proxy = conn.with_proxy(destination, path, timeout);
-	let (ret,): (String,) = proxy.method_call(interface, method, args).unwrap();
-	ret
+	let (ret,): (String,) = proxy.method_call(interface, method, args)?;
+	Ok(ret)
 }
 
-pub(crate) fn get_screens() -> Vec<Screen> {
-	let desktops: Vec<KDE_DESKTOP> = serde_json::from_str(&plasmashell("print(JSON.stringify(desktops()));")).unwrap();
+pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
+	let desktops: Vec<KdeDesktop> = serde_json::from_str(&plasmashell("print(JSON.stringify(desktops()));")?)?;
 	let mut screens = std::vec::Vec::new();
 	for desktop in desktops {
 		if desktop.screen >= 0 {
@@ -35,10 +35,10 @@ pub(crate) fn get_screens() -> Vec<Screen> {
 			});
 		}
 	}
-	screens
+	Ok(screens)
 }
 
-pub(crate) fn set_screens(screens: Vec<Screen>) {
+pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), dbus::Error> {
 	let mut command = r#"
 for (const desktop of desktops()) {
 	desktop.currentConfigGroup = ["Wallpaper", "org.kde.image", "General"];"#
@@ -65,5 +65,6 @@ for (const desktop of desktops()) {
 	command += r#"
 }"#;
 	println!("{}", command);
-	plasmashell(&command);
+	plasmashell(&command)?;
+	Ok(())
 }
