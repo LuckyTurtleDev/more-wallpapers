@@ -169,6 +169,6 @@ where
 	T: Into<String>,
 	T: Clone,
 {
-	let builder = WallpaperBuilder::new();
-	builder.set_wallpapers_from_vec(wallpapers, mode);
+	let builder = WallpaperBuilder::new()?;
+	builder.set_wallpapers_from_vec(wallpapers, mode)
 }

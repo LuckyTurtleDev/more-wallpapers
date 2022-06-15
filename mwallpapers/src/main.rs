@@ -13,7 +13,7 @@ impl<V, E> BoxedErrorHandling<V, E> for Result<V, E>
 where
 	E: std::fmt::Display,
 {
-	fn to_ah(mut self) -> anyhow::Result<V> {
+	fn to_ah(self) -> anyhow::Result<V> {
 		match self {
 			Ok(value) => Ok(value),
 			Err(error) => bail!("{error}"),
