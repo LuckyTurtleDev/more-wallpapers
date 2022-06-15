@@ -49,7 +49,6 @@ pub enum WallpaperError {
 	#[error("{0}")]
 	Command(#[from] CommandError),
 
-	#[cfg(target_os = "linux")]
 	#[error("{0}")]
 	WallpaperCrate(#[from] Box<dyn std::error::Error>),
 }

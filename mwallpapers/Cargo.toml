@@ -6,5 +6,6 @@ edition = "2021"
 
 
 [dependencies]
+anyhow = { version = "1.0", feature= ["std"] }
 more-wallpapers = { path = "../more-wallpapers" }
 clap = { version = "3.1", features = ["derive"] }
