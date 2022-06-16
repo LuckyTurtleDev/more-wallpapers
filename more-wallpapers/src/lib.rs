@@ -3,6 +3,7 @@
 
 use educe::Educe;
 use strum_macros::Display;
+use strum_macros::EnumString;
 
 pub mod error;
 use error::{load_env_var, WallpaperError};
@@ -25,7 +26,7 @@ mod macos;
 #[cfg(target_os = "macos")]
 use crate::macos::*;
 
-#[derive(Debug, Clone, Copy, Educe, Display, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Educe, EnumString, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
 #[educe(Default)]
 pub enum Mode {

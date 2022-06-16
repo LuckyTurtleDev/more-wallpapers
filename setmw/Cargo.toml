@@ -1,5 +1,5 @@
 [package]
-name = "mwallpapers"
+name = "setmw"
 version = "0.0.0"
 workspace = ".."
 edition = "2021"

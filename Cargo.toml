@@ -1,2 +1,2 @@
 [workspace]
-members = ["mwallpapers","more-wallpapers"]
+members = ["setmw","more-wallpapers"]

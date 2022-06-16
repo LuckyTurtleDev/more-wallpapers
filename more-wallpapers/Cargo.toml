@@ -9,6 +9,7 @@ edition = "2021"
 [dependencies]
 educe = "0.4"
 rand = { version = "0.8.5", features = ["alloc"], optional = true }
+strum = "0.24"
 strum_macros = "0.24"
 thiserror = "1.0"
 wallpaper = "3.2"
