@@ -22,18 +22,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --workspace --all-features --target x86_64-pc-windows-gnu
+      - run: cargo test --workspace --all-features
         env:
           RUST_BACKTRACE: 1
 
   macos:
-    runs-on: ubuntu-latest
+    runs-on:  macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: dtolnay/rust-toolchain@stable
-        with:
-          target: x86_64-apple-darwin
-      - run: cargo test --workspace --all-features --target x86_64-apple-darwin
+      - run: cargo test --workspace --all-features
         env:
           RUST_BACKTRACE: 1
 
