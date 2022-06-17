@@ -53,6 +53,7 @@ pub enum WallpaperError {
 	WallpaperCrate(#[from] Box<dyn std::error::Error>),
 }
 
+#[cfg(target_os = "linux")]
 pub(crate) fn load_env_var(key: &'static str) -> Result<String, WallpaperError> {
 	std::env::var(key).map_err(|err| WallpaperError::EnvVar(key, err))
 }

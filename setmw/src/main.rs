@@ -1,7 +1,6 @@
 use anyhow::bail;
 use clap::Parser;
 use more_wallpapers::{Mode, WallpaperBuilder};
-use std::collections::hash_map::HashMap;
 
 trait BoxedErrorHandling<V, E>
 where
@@ -75,10 +74,7 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 				.iter()
 				.position(|r| r == &screen.name)
 				.expect("no wallpaper specified for screen {screen.name}");
-			(
-				opt.screens[index].clone(),
-				*opt.modes.get(index).unwrap_or(&Mode::default()),
-			)
+			(opt.screens[index].clone(), *opt.modes.get(index).unwrap_or(&Mode::default()))
 		})
 		.to_ah()?;
 	Ok(())

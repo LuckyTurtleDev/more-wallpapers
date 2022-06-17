@@ -12,7 +12,7 @@ rand = { version = "0.8.5", features = ["alloc"], optional = true }
 strum = "0.24"
 strum_macros = "0.24"
 thiserror = "1.0"
-wallpaper = "3.2"
+wallpaper = { version = "3.2", optional = true }
 
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
 dbus = "0.9"

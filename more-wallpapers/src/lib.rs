@@ -2,11 +2,12 @@
 #![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
 
 use educe::Educe;
-use strum_macros::Display;
-use strum_macros::EnumString;
+use strum_macros::{Display, EnumString};
 
 pub mod error;
-use error::{load_env_var, WallpaperError};
+#[cfg(target_os = "linux")]
+use error::load_env_var;
+use error::WallpaperError;
 
 #[cfg(feature = "rand")]
 use rand::{prelude::IteratorRandom, seq::SliceRandom};
@@ -16,11 +17,15 @@ mod linux;
 #[cfg(target_os = "linux")]
 use crate::linux::*;
 
+#[cfg(all(target_os = "windows", not(feature = "wallpaper")))]
+std::compile_error!("Windows does need the \"wallpaper\" feature");
 #[cfg(target_os = "windows")]
 mod windows;
 #[cfg(target_os = "windows")]
 use crate::windows::*;
 
+#[cfg(all(target_os = "macos", not(feature = "wallpaper")))]
+std::compile_error!("MacOS does need the \"wallpaper\" feature");
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(target_os = "macos")]
@@ -47,6 +52,7 @@ pub enum Mode {
 #[strum(serialize_all = "lowercase")]
 pub enum Enviroment {
 	Kde,
+	#[cfg(feature = "wallpaper")]
 	LinuxWallpaperCrate,
 	MacOS,
 	Windows,
@@ -57,6 +63,7 @@ impl Enviroment {
 	pub fn support_various_wallpaper(&self) -> bool {
 		match self {
 			Self::Kde => true,
+			#[cfg(feature = "wallpaper")]
 			Self::LinuxWallpaperCrate => false,
 			Self::MacOS => false,
 			Self::Windows => false,
