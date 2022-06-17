@@ -33,7 +33,10 @@
 //! witch wallpaper should be set to witch screen,
 //! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
 //! ```
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! # fn main(){
+//! # let _ = catch_error(); //will fail on ci, because of missing enviroment varibable and gui
+//! # }
+//! # fn catch_error() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::Mode;
 //!
 //! let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
@@ -43,7 +46,10 @@
 //!
 //! For advance wallpaper settings you can use the [`WallpaperBuilder`].
 //! ```
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! # fn main(){
+//! # let _ = catch_error();
+//! # }
+//! # fn catch_error() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::{Mode, WallpaperBuilder};
 //!
 //! let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
