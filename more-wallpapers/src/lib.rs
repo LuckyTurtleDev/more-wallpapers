@@ -1,6 +1,62 @@
 #![warn(unreachable_pub)]
 #![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
 
+//! Yet another wallpaper Crate, witch can set a wallpaper per screen.
+//!
+//! The main feature over other crates like [wallpaper](https://crates.io/crates/wallpaper) or [wall](https://crates.io/crates/wall) is the abbilty to set **different wallpapers** on differens screens.
+//! Current this feature is only implemated for some Enviroments.
+//! Because of this you can enable the "wallpaper" feature,
+//! with does use the [wallpaper](https://crates.io/crates/wallpaper) crate as fallback.
+//! So you can use the additonal features of this crate and
+//! still support the larger amount of supported Enviroments of the [wallpaper](https://crates.io/crates/wallpaper) crate.
+//!
+//! Current the following enviroments are supported:
+//!
+//! | enviroment | set wallpaper | set wallpaper per screen | requirements |
+//! --- | :---: | :---:| --- |
+//! |Windows                     | ✅ | ❌ | features=["wallpaper"] |
+//! |MacOS                       | ✅ | ❌ | features=["wallpaper"] |
+//! |X11                         | ✅ | ✅ | [xwallpaper](https://github.com/stoeckmann/xwallpaper) |
+//! |Budgie(wayland)             | ✅ | ❌ | features=["wallpaper"] |
+//! |Deepin(wayland)             | ✅ | ❌ | features=["wallpaper"] |
+//! |GNOME(wayland)              | ✅ | ❌ | features=["wallpaper"] |
+//! |KDE                         | ✅ | ✅ | [xrandr](https://gitlab.freedesktop.org/xorg/app/xrandr), [dbus](https://gitlab.freedesktop.org/dbus/dbus) |
+//! |Mate(wayland)               | ✅ | ❌ | features=["wallpaper"] |
+//! |Sway                        | ✅ | ❌ | features=["wallpaper"], [swaybg](https://github.com/swaywm/swaybg) |
+//! |some other wayland desktops | ✅ | ❌ | features=["wallpaper"], [swaybg](https://github.com/swaywm/swaybg), dektop must support wlr-layer-shell protocol and wl_output version 4 |
+//!
+//! The information abot the current supported features are also provided by [`Enviroment`].
+//!
+//! <br/><br/>
+//! **QuickStart / Examples:**<br/>
+//! If you would like to set only a different wallpaper at each screen and do not care,
+//! witch wallpaper should be set to witch screen,
+//! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
+//! ```
+//! use more_wallpapers::Mode;
+//!
+//! let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+//! more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop).expect("Failed to set Wallpaper");
+//! ```
+//!
+//! For advance wallpaper settings you can use the [`WallpaperBuilder`].
+//! ```
+//! use more_wallpapers::{Mode, WallpaperBuilder};
+//!
+//! let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+//! WallpaperBuilder::new()
+//! 	.unwrap()
+//! 	.set_wallapers(|i, screen| -> (String, Mode) {
+//! 		if i == 0 {
+//! 			return ("/usr/share/wallpapers/first.jpg".to_owned(), Mode::default());
+//! 		}
+//! 		if screen.name == "HDMI1" {
+//! 			return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
+//! 		}
+//! 		(fallback_images[i % fallback_images.len()].to_owned(), Mode::Tile)
+//! 	})
+//! 	.unwrap();
+//! ```
 use educe::Educe;
 use strum_macros::{Display, EnumString};
 
@@ -31,6 +87,7 @@ mod macos;
 #[cfg(target_os = "macos")]
 use crate::macos::*;
 
+/// define how the wallpaper will be stretch, zoom, repeated etc
 #[derive(Debug, Clone, Copy, Educe, EnumString, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
 #[educe(Default)]
@@ -48,13 +105,17 @@ pub enum Mode {
 	Tile,
 }
 
+/// Represent the used operating system or dekstop.
+/// Inform about supported features, at the curren enviroment.
 #[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
 pub enum Enviroment {
 	Kde,
 	#[cfg(feature = "wallpaper")]
 	LinuxWallpaperCrate,
+	#[cfg(feature = "wallpaper")]
 	MacOS,
+	#[cfg(feature = "wallpaper")]
 	Windows,
 	X11,
 }
@@ -72,6 +133,7 @@ impl Enviroment {
 	}
 }
 
+/// include information about a connected screen
 #[derive(Clone, Debug)]
 pub struct Screen {
 	pub name: String,
@@ -79,7 +141,7 @@ pub struct Screen {
 	mode: Option<Mode>,
 }
 
-///Builder for advance Wallpaper settings.
+///Builder for advance Wallpaper settings and informations.
 ///This struct should not be stored for a long time, because it can become outdated if the user connect or disconnect monitors or change the Display settings.
 #[derive(Clone, Debug)]
 pub struct WallpaperBuilder {
