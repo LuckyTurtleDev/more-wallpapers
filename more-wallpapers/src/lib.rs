@@ -33,29 +33,30 @@
 //! witch wallpaper should be set to witch screen,
 //! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
 //! ```
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::Mode;
 //!
 //! let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-//! more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop).expect("Failed to set Wallpaper");
+//! more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop)?;
+//! # Ok(())}
 //! ```
 //!
 //! For advance wallpaper settings you can use the [`WallpaperBuilder`].
 //! ```
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::{Mode, WallpaperBuilder};
 //!
 //! let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-//! WallpaperBuilder::new()
-//! 	.unwrap()
-//! 	.set_wallapers(|i, screen| -> (String, Mode) {
-//! 		if i == 0 {
-//! 			return ("/usr/share/wallpapers/first.jpg".to_owned(), Mode::default());
-//! 		}
-//! 		if screen.name == "HDMI1" {
-//! 			return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
-//! 		}
-//! 		(fallback_images[i % fallback_images.len()].to_owned(), Mode::Tile)
-//! 	})
-//! 	.unwrap();
+//! WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
+//! 	if i == 0 {
+//! 		return ("/usr/share/wallpapers/first.jpg".to_owned(), Mode::default());
+//! 	}
+//! 	if screen.name == "HDMI1" {
+//! 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
+//! 	}
+//! 	(fallback_images[i % fallback_images.len()].to_owned(), Mode::Tile)
+//! })?;
+//! # Ok(())}
 //! ```
 use educe::Educe;
 use strum_macros::{Display, EnumString};
