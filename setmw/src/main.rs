@@ -81,7 +81,9 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 }
 
 fn set_all(opt: SetAllOpt) -> anyhow::Result<()> {
-	more_wallpapers::set_wallpapers_from_vec(opt.images, Mode::Crop).to_ah()
+	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, Mode::Crop).to_ah()?;
+	println!("The backgrounds have been set to the following wallpapers {used_wallpapers:?}");
+	Ok(())
 }
 
 fn main() {
