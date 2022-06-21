@@ -3,6 +3,7 @@ name = "more-wallpapers"
 version = "0.0.0"
 workspace = ".."
 edition = "2021"
+repository ="https://github.com/Lukas1818/more-wallpapers"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

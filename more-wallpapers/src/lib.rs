@@ -32,11 +32,8 @@
 //! If you would like to set only a different wallpaper at each screen and do not care,
 //! witch wallpaper should be set to witch screen,
 //! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
-//! ```
-//! # fn main(){
-//! # let _ = catch_error(); //will fail on ci, because of missing enviroment varibable and gui
-//! # }
-//! # fn catch_error() -> Result<(), Box<dyn std::error::Error>> {
+//! ``` no_run
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::Mode;
 //!
 //! let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
@@ -45,11 +42,8 @@
 //! ```
 //!
 //! For advance wallpaper settings you can use the [`WallpaperBuilder`].
-//! ```
-//! # fn main(){
-//! # let _ = catch_error();
-//! # }
-//! # fn catch_error() -> Result<(), Box<dyn std::error::Error>> {
+//! ``` no_run
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::{Mode, WallpaperBuilder};
 //!
 //! let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
@@ -65,12 +59,16 @@
 //! # Ok(())}
 //! ```
 use educe::Educe;
+use std::{
+	io,
+	path::{Path, PathBuf},
+};
 use strum_macros::{Display, EnumString};
 
 pub mod error;
 #[cfg(target_os = "linux")]
 use error::load_env_var;
-use error::WallpaperError;
+use error::{Context, WallpaperError};
 
 #[cfg(feature = "rand")]
 use rand::{prelude::IteratorRandom, seq::SliceRandom};
@@ -133,7 +131,9 @@ impl Enviroment {
 			Self::Kde => true,
 			#[cfg(feature = "wallpaper")]
 			Self::LinuxWallpaperCrate => false,
+			#[cfg(feature = "wallpaper")]
 			Self::MacOS => false,
+			#[cfg(feature = "wallpaper")]
 			Self::Windows => false,
 			Self::X11 => true,
 		}
@@ -144,7 +144,7 @@ impl Enviroment {
 #[derive(Clone, Debug)]
 pub struct Screen {
 	pub name: String,
-	wallpaper: Option<String>,
+	wallpaper: Option<std::path::PathBuf>,
 	mode: Option<Mode>,
 }
 
@@ -181,36 +181,47 @@ impl WallpaperBuilder {
 
 	///Set background to wallpapers, witch will selected by the given closure.
 	///The index oft screen and the current screen are passed to the closure.
-	pub fn set_wallapers<F>(mut self, f: F) -> Result<(), WallpaperError>
+	pub fn set_wallapers<F, P>(mut self, mut f: F) -> Result<(), WallpaperError>
 	where
-		F: Fn(usize, &Screen) -> (String, Mode),
+		P: AsRef<Path>,
+		F: FnMut(usize, &Screen) -> (P, Mode),
 	{
-		for (i, screen) in self.screens.iter_mut().enumerate() {
-			let tupple = f(i, &screen);
-			screen.wallpaper = Some(tupple.0);
-			screen.mode = Some(tupple.1)
+		for (i, mut screen) in self.screens.iter_mut().enumerate() {
+			let tuple = f(i, &screen);
+			let path = tuple.0.as_ref();
+			let path = path.canonicalize().context(path.to_string_lossy())?;
+			if path.exists() {
+				return Err(io::Error::from(io::ErrorKind::NotFound)).context(path.to_string_lossy());
+			}
+			screen.wallpaper = Some(path);
+			screen.mode = Some(tuple.1)
 		}
 		set_screens_from_builder(self)
 	}
 
 	///Set the background of all screens to the wallpapers of `wallpapers`.
 	///The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`
-	pub fn set_wallpapers_from_vec<T>(self, wallpapers: Vec<T>, mode: Mode) -> Result<(), WallpaperError>
+	pub fn set_wallpapers_from_vec<P>(self, wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
 	where
-		T: Into<String>,
-		T: Clone,
+		P: AsRef<Path>,
 	{
-		self.set_wallapers(|i, _| (wallpapers[i % wallpapers.len()].clone().into(), mode))
+		let mut used_wallpapers = Vec::new();
+		self.set_wallapers(|i, _| {
+			let wallpaper = wallpapers[i % wallpapers.len()].as_ref();
+			used_wallpapers.push(wallpaper.to_owned());
+			(wallpaper, mode)
+		})?;
+		Ok(used_wallpapers)
 	}
 
 	///Like [`Self::set_wallpapers_from_vec`],
 	///but map the wallpapers randomly to the screens.
 	///Selecting the same wallpaper multiple time will be avoid, if this is possible.
 	#[cfg(feature = "rand")]
-	pub fn set_random_wallpapers_from_vec<T>(self, wallpapers: Vec<T>, mode: Mode) -> Result<(), WallpaperError>
+	pub fn set_random_wallpapers_from_vec<P>(self, wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
 	where
-		T: Into<String>,
-		T: Clone,
+		P: AsRef<Path>,
+		P: Clone,
 	{
 		let mut rng = rand::thread_rng();
 		let wallpapers = if wallpapers.len() < self.screen_count() {
@@ -231,21 +242,20 @@ impl WallpaperBuilder {
 	}
 }
 
-pub fn set_wallpapers_from_vec<T>(wallpapers: Vec<T>, mode: Mode) -> Result<(), WallpaperError>
+pub fn set_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
 where
-	T: Into<String>,
-	T: Clone,
+	P: AsRef<Path>,
 {
 	let builder = WallpaperBuilder::new()?;
 	builder.set_wallpapers_from_vec(wallpapers, mode)
 }
 
 #[cfg(feature = "rand")]
-pub fn set_random_wallpapers_from_vec<T>(wallpapers: Vec<T>, mode: Mode) -> Result<(), WallpaperError>
+pub fn set_random_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
 where
-	T: Into<String>,
-	T: Clone,
+	P: AsRef<Path>,
+	P: Clone,
 {
 	let builder = WallpaperBuilder::new()?;
-	builder.set_wallpapers_from_vec(wallpapers, mode)
+	builder.set_random_wallpapers_from_vec(wallpapers, mode)
 }

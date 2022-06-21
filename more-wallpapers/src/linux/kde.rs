@@ -59,7 +59,7 @@ for (const desktop of desktops()) {
 	}}"#,
 			screen.name,
 			mode,
-			screen.wallpaper.unwrap()
+			screen.wallpaper.unwrap().to_str().unwrap()
 		);
 	}
 	command += r#"

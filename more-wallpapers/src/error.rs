@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, io};
 use thiserror::Error;
 
 #[cfg(target_os = "linux")]
@@ -51,6 +51,24 @@ pub enum WallpaperError {
 
 	#[error("{0}")]
 	WallpaperCrate(#[from] Box<dyn std::error::Error>),
+
+	#[error("{0:?} {1}")]
+	IOError(String, io::Error),
+}
+
+pub(crate) trait Context<V> {
+	fn context<C>(self, context: C) -> Result<V, WallpaperError>
+	where
+		C: std::fmt::Display;
+}
+
+impl<V> Context<V> for Result<V, io::Error> {
+	fn context<C>(self, context: C) -> Result<V, WallpaperError>
+	where
+		C: std::fmt::Display,
+	{
+		self.map_err(|error| WallpaperError::IOError(context.to_string(), error))
+	}
 }
 
 #[cfg(target_os = "linux")]

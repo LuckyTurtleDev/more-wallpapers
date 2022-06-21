@@ -27,7 +27,12 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), CommandError> {
 			Mode::Stretch => "stretch",
 			Mode::Tile => "tile",
 		};
-		command.args(["--output", &screen.name, &format!("--{mode}"), &screen.wallpaper.unwrap()]);
+		command.args([
+			"--output",
+			&screen.name,
+			&format!("--{mode}"),
+			&screen.wallpaper.unwrap().to_str().unwrap(),
+		]);
 	}
 	let out = command.output()?;
 	if !out.status.success() {
