@@ -1,38 +1,38 @@
 #![warn(unreachable_pub)]
 #![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
 
-//! Yet another wallpaper Crate, witch can set a wallpaper per screen.
+//! Yet another wallpaper crate, which can set a wallpapers per screen.
 //!
-//! The main feature over other crates like [wallpaper](https://crates.io/crates/wallpaper) or [wall](https://crates.io/crates/wall) is the abbilty to set **different wallpapers** on differens screens.
-//! Current this feature is only implemated for some Enviroments.
+//! The main feature over other crates like [wallpaper] or [wall] is the ability to set **different wallpapers** on different screens.
+//! Currently this feature is only implemented for some enviroments.
 //! Because of this you can enable the "wallpaper" feature,
-//! with does use the [wallpaper](https://crates.io/crates/wallpaper) crate as fallback.
-//! So you can use the additonal features of this crate and
-//! still support the larger amount of supported Enviroments of the [wallpaper](https://crates.io/crates/wallpaper) crate.
+//! which uses the [wallpaper] crate as a fallback on unsupported environments.
+//! This means you can use the additonal features of this crate and
+//! still support the large amount of supported enviroments of the [wallpaper] crate.
 //!
-//! Current the following enviroments are supported:
+//! Currently the following enviroments are supported:
 //!
 //! | enviroment | set wallpaper | set wallpaper per screen | requirements |
 //! --- | :---: | :---:| --- |
-//! |Windows                     | ✅ | ❌ | features=["wallpaper"] |
-//! |MacOS                       | ✅ | ❌ | features=["wallpaper"] |
-//! |X11                         | ✅ | ✅ | [xwallpaper](https://github.com/stoeckmann/xwallpaper) |
-//! |Budgie(wayland)             | ✅ | ❌ | features=["wallpaper"] |
-//! |Deepin(wayland)             | ✅ | ❌ | features=["wallpaper"] |
-//! |GNOME(wayland)              | ✅ | ❌ | features=["wallpaper"] |
-//! |KDE                         | ✅ | ✅ | [xrandr](https://gitlab.freedesktop.org/xorg/app/xrandr), [dbus](https://gitlab.freedesktop.org/dbus/dbus) |
-//! |Mate(wayland)               | ✅ | ❌ | features=["wallpaper"] |
-//! |Sway                        | ✅ | ❌ | features=["wallpaper"], [swaybg](https://github.com/swaywm/swaybg) |
-//! |some other wayland desktops | ✅ | ❌ | features=["wallpaper"], [swaybg](https://github.com/swaywm/swaybg), dektop must support wlr-layer-shell protocol and wl_output version 4 |
+//! |Windows                     | ✅ | ❌ | `features=["wallpaper"]` |
+//! |MacOS                       | ✅ | ❌ | `features=["wallpaper"]` |
+//! |X11                         | ✅ | ✅ | [xwallpaper] |
+//! |Budgie(wayland)             | ✅ | ❌ | `features=["wallpaper"]` |
+//! |Deepin(wayland)             | ✅ | ❌ | `features=["wallpaper"]` |
+//! |GNOME(wayland)              | ✅ | ❌ | `features=["wallpaper"]` |
+//! |KDE                         | ✅ | ✅ | [xrandr], [dbus] |
+//! |Mate(wayland)               | ✅ | ❌ | `features=["wallpaper"]` |
+//! |Sway                        | ✅ | ❌ | `features=["wallpaper"]`, [swaybg] |
+//! |some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 //!
-//! The information abot the current supported features are also provided by [`Enviroment`].
+//! The information about the currently supported features are also provided by [`Enviroment`].
 //!
 //! <br/><br/>
 //! **QuickStart / Examples:**<br/>
-//! If you would like to set only a different wallpaper at each screen and do not care,
-//! witch wallpaper should be set to witch screen,
+//! If you would like to set only a different wallpaper for each screen and don't care
+//! which wallpaper is used on which screen,
 //! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
-//! ``` no_run
+//! ```no_run
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::Mode;
 //!
@@ -41,7 +41,7 @@
 //! # Ok(())}
 //! ```
 //!
-//! For advance wallpaper settings you can use the [`WallpaperBuilder`].
+//! For advanced wallpaper settings you can use the [`WallpaperBuilder`]:
 //! ``` no_run
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::{Mode, WallpaperBuilder};
@@ -58,6 +58,14 @@
 //! })?;
 //! # Ok(())}
 //! ```
+//!
+//!  [wallpaper]: https://crates.io/crates/wallpaper
+//!  [wall]: https://crates.io/crates/wall
+//!  [xwallpaper]: https://github.com/stoeckmann/xwallpaper
+//!  [xrandr]: https://gitlab.freedesktop.org/xorg/app/xrandr
+//!  [dbus]: https://gitlab.freedesktop.org/dbus/dbus
+//!  [swaybg]: https://github.com/swaywm/swaybg
+
 use educe::Educe;
 use std::{
 	io,
