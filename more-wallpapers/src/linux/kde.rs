@@ -64,7 +64,6 @@ for (const desktop of desktops()) {
 	}
 	command += r#"
 }"#;
-	println!("{}", command);
 	plasmashell(&command)?;
 	Ok(())
 }

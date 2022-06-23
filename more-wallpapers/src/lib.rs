@@ -198,7 +198,7 @@ impl WallpaperBuilder {
 			let tuple = f(i, &screen);
 			let path = tuple.0.as_ref();
 			let path = path.canonicalize().context(path.to_string_lossy())?;
-			if path.exists() {
+			if !path.exists() {
 				return Err(io::Error::from(io::ErrorKind::NotFound)).context(path.to_string_lossy());
 			}
 			screen.wallpaper = Some(path);
