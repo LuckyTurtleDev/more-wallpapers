@@ -27,9 +27,11 @@ pub enum CommandError {
 #[derive(Debug, Error)]
 #[non_exhaustive]
 pub enum WallpaperError {
+	#[cfg(target_os = "linux")]
 	#[error("unsupported Destkop Enviroment {0:?}")]
 	Unsuported(String),
 
+	#[cfg(target_os = "linux")]
 	#[error("can not read Enviroment Variable {0:?}: {1}")]
 	EnvVar(&'static str, env::VarError),
 
@@ -49,6 +51,7 @@ pub enum WallpaperError {
 	#[error("{0}")]
 	Command(#[from] CommandError),
 
+	#[cfg(feature = "wallpaper")]
 	#[error("{0}")]
 	WallpaperCrate(#[from] Box<dyn std::error::Error>),
 
