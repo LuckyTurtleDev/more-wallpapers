@@ -187,8 +187,23 @@ impl WallpaperBuilder {
 		screens
 	}
 
-	///Set background to wallpapers, witch will selected by the given closure.
+	///Set background to wallpapers, witch will be selected by the given closure.
 	///The index oft screen and the current screen are passed to the closure.
+	/// ``` no_run
+	/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+	/// use more_wallpapers::{Mode, WallpaperBuilder};
+	///
+	/// let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+	/// WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
+	/// 	if i == 0 {
+	/// 		return ("/usr/share/wallpapers/first.jpg".to_owned(), Mode::default());
+	/// 	}
+	/// 	if screen.name == "HDMI1" {
+	/// 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
+	/// 	}
+	/// 	(fallback_images[i % fallback_images.len()].to_owned(), Mode::Tile)
+	/// })?;
+	/// # Ok(())}
 	pub fn set_wallapers<F, P>(mut self, mut f: F) -> Result<(), WallpaperError>
 	where
 		P: AsRef<Path>,
@@ -208,7 +223,20 @@ impl WallpaperBuilder {
 	}
 
 	///Set the background of all screens to the wallpapers of `wallpapers`.
-	///The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`
+	///The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`.
+	/// Return a vec, with dose inlcude the path of the Wallpapers,
+	/// witch was set as background.
+	/// If the same wallpaper was set multiple times to different screens,
+	/// the return value does also include the wallpaper multiple times.
+	/// ```no_run
+	/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+	/// use more_wallpapers::{Mode, WallpaperBuilder};
+	///
+	/// let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+	/// let used_wallpapers = WallpaperBuilder::new()?.set_wallpapers_from_vec(images, Mode::Crop)?;
+	/// println!("background was set to the following wallpapers {used_wallpapers:?}");
+	/// # Ok(())}
+	/// ```
 	pub fn set_wallpapers_from_vec<P>(self, wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
 	where
 		P: AsRef<Path>,
@@ -250,6 +278,21 @@ impl WallpaperBuilder {
 	}
 }
 
+///Set the background of all screens to the wallpapers of `wallpapers`.
+///The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`.
+/// Return a vec, with dose inlcude the path of the Wallpapers,
+/// witch was set as background.
+/// If the same wallpaper was set multiple times to different screens,
+/// the return value does also include the wallpaper multiple times.
+/// ```no_run
+/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// use more_wallpapers::{set_wallpapers_from_vec, Mode};
+///
+/// let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+/// let used_wallpapers = set_wallpapers_from_vec(images, Mode::Crop)?;
+/// println!("background was set to the following wallpapers {used_wallpapers:?}");
+/// # Ok(())}
+/// ```
 pub fn set_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
 where
 	P: AsRef<Path>,
@@ -258,6 +301,9 @@ where
 	builder.set_wallpapers_from_vec(wallpapers, mode)
 }
 
+///Like [`set_wallpapers_from_vec`],
+///but map the wallpapers randomly to the screens.
+///Selecting the same wallpaper multiple time will be avoid, if this is possible.
 #[cfg(feature = "rand")]
 pub fn set_random_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
 where
