@@ -1,3 +1,4 @@
+#![allow(clippy::tabs_in_doc_comments)]
 #![warn(unreachable_pub)]
 #![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
 
@@ -49,12 +50,18 @@
 //! let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
 //! WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 //! 	if i == 0 {
-//! 		return ("/usr/share/wallpapers/first.jpg".to_owned(), Mode::default());
+//! 		return (
+//! 			"/usr/share/wallpapers/first.jpg".to_owned(),
+//! 			Mode::default(),
+//! 		);
 //! 	}
 //! 	if screen.name == "HDMI1" {
 //! 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
 //! 	}
-//! 	(fallback_images[i % fallback_images.len()].to_owned(), Mode::Tile)
+//! 	(
+//! 		fallback_images[i % fallback_images.len()].to_owned(),
+//! 		Mode::Tile,
+//! 	)
 //! })?;
 //! # Ok(())}
 //! ```
@@ -208,7 +215,7 @@ impl WallpaperBuilder {
 		F: FnMut(usize, &Screen) -> (P, Mode),
 	{
 		for (i, mut screen) in self.screens.iter_mut().enumerate() {
-			let tuple = f(i, &screen);
+			let tuple = f(i, screen);
 			let path = tuple.0.as_ref();
 			let path = path.canonicalize().context(path.to_string_lossy())?;
 			if !path.exists() {

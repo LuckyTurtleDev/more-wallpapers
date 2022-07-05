@@ -1,6 +1,5 @@
 use crate::{error::CommandError, Mode, Screen};
 use std::process::Command;
-use xrandr;
 
 pub(crate) fn get_screens() -> Result<Vec<Screen>, xrandr::XrandrError> {
 	let monitors = xrandr::XHandle::open()?.monitors()?;
@@ -31,7 +30,7 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), CommandError> {
 			"--output",
 			&screen.name,
 			&format!("--{mode}"),
-			&screen.wallpaper.unwrap().to_str().unwrap(),
+			screen.wallpaper.unwrap().to_str().unwrap(),
 		]);
 	}
 	let out = command.output()?;
