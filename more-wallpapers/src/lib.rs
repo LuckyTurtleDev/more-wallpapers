@@ -66,7 +66,6 @@
 //!  [dbus]: https://gitlab.freedesktop.org/dbus/dbus
 //!  [swaybg]: https://github.com/swaywm/swaybg
 
-use educe::Educe;
 use std::{
 	io,
 	path::{Path, PathBuf},
@@ -101,14 +100,13 @@ mod macos;
 use crate::macos::*;
 
 /// define how the wallpaper will be stretch, zoom, repeated etc
-#[derive(Debug, Clone, Copy, Educe, EnumString, Display, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Default, EnumString, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
-#[educe(Default)]
 pub enum Mode {
 	///center image witout zooming. Image is may not full visible. Empty space is filled with black.
 	Center,
 	///zoom image to match x and y size of display and keep aspect ratio. Some parts of the image is may cut off.
-	#[educe(Default)]
+	#[default]
 	Crop,
 	///zoom image to match match x or y size of the display, the other will be filled with a black bar at each side. All parts of the immages are visible.
 	Fit,

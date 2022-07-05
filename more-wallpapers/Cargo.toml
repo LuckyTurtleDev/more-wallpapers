@@ -3,15 +3,14 @@ name = "more-wallpapers"
 version = "0.1.0"
 workspace = ".."
 edition = "2021"
+rust-version = "1.62"
 repository ="https://github.com/LuckyTurtleDev/more-wallpapers"
 keywords = ["desktop", "wallpaper", "background"]
 include = ["/src/**/*.rs", "/LICENSE", "/README.md"]
 license = "MIT OR Apache-2.0"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-educe = "0.4"
 rand = { version = "0.8.5", features = ["alloc"], optional = true }
 strum = "0.24"
 strum_macros = "0.24"
