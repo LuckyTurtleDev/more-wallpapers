@@ -59,9 +59,9 @@ WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
  [__cargo_doc2readme_dependencies_info]: ggGkYW0AYXSEG52uRQSwBdezG6GWW8ODAbr5G6KRmT_WpUB5G9hPmBcUiIp6YXKEG3EPptE75uGfG_7IeKD-Wc6FG5Bnb10r1o_JG6Z7TFIH7_lBYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjBvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
- [__link10]: https://docs.rs/more-wallpapers/0.1.0/more_wallpapers/?search=set_wallpapers_from_vec
- [__link11]: https://docs.rs/more-wallpapers/0.1.0/more_wallpapers/?search=set_random_wallpapers_from_vec
- [__link12]: https://docs.rs/more-wallpapers/0.1.0/more_wallpapers/?search=more_wallpapers::WallpaperBuilder
+ [__link10]: https://docs.rs/more-wallpapers/latest/more_wallpapers/?search=set_wallpapers_from_vec
+ [__link11]: https://docs.rs/more-wallpapers/latest/more_wallpapers/?search=set_random_wallpapers_from_vec
+ [__link12]: https://docs.rs/more-wallpapers/latest/more_wallpapers/?search=more_wallpapers::WallpaperBuilder
  [__link2]: https://crates.io/crates/wallpaper
  [__link3]: https://crates.io/crates/wallpaper
  [__link4]: https://github.com/stoeckmann/xwallpaper
