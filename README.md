@@ -40,17 +40,23 @@ use more_wallpapers::{Mode, WallpaperBuilder};
 let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
 WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 	if i == 0 {
-		return ("/usr/share/wallpapers/first.jpg".to_owned(), Mode::default());
+		return (
+			"/usr/share/wallpapers/first.jpg".to_owned(),
+			Mode::default(),
+		);
 	}
 	if screen.name == "HDMI1" {
 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
 	}
-	(fallback_images[i % fallback_images.len()].to_owned(), Mode::Tile)
+	(
+		fallback_images[i % fallback_images.len()].to_owned(),
+		Mode::Tile,
+	)
 })?;
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0AYXSEG52uRQSwBdezG6GWW8ODAbr5G6KRmT_WpUB5G9hPmBcUiIp6YXKEGw4MZk6ZNUBhGzYa0wKJzVtdG7sm5nJEXFbuG9KZ2FJFVKK_YWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjBvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0AYXSEG52uRQSwBdezG6GWW8ODAbr5G6KRmT_WpUB5G9hPmBcUiIp6YXKEG3EPptE75uGfG_7IeKD-Wc6FG5Bnb10r1o_JG6Z7TFIH7_lBYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjBvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: `set_wallpapers_from_vec()`
