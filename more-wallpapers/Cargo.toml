@@ -8,6 +8,7 @@ repository ="https://github.com/LuckyTurtleDev/more-wallpapers"
 keywords = ["desktop", "wallpaper", "background"]
 include = ["/src/**/*.rs", "/LICENSE", "/README.md"]
 license = "MIT OR Apache-2.0"
+description= "crossplatform library to set desktop wallpaper per screen"
 
 
 [dependencies]
