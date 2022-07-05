@@ -8,10 +8,9 @@ mod wallpaper_crate;
 
 fn get_enviroment() -> Result<Enviroment, WallpaperError> {
 	let desktop = load_env_var("XDG_CURRENT_DESKTOP")?.to_lowercase();
-	match desktop.as_str() {
-		"kde" => return Ok(Enviroment::Kde),
-		_ => (),
-	};
+	if desktop.as_str() == "kde" {
+		return Ok(Enviroment::Kde);
+	}
 	let sessinon_type = load_env_var("XDG_SESSION_TYPE")?.to_lowercase();
 	match sessinon_type.as_str() {
 		"x11" => Ok(Enviroment::X11),

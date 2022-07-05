@@ -1,3 +1,4 @@
+#![allow(clippy::tabs_in_doc_comments)]
 #![warn(unreachable_pub)]
 #![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
 
@@ -210,7 +211,7 @@ impl WallpaperBuilder {
 		F: FnMut(usize, &Screen) -> (P, Mode),
 	{
 		for (i, mut screen) in self.screens.iter_mut().enumerate() {
-			let tuple = f(i, &screen);
+			let tuple = f(i, screen);
 			let path = tuple.0.as_ref();
 			let path = path.canonicalize().context(path.to_string_lossy())?;
 			if !path.exists() {

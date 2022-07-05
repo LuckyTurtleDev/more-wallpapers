@@ -1,8 +1,8 @@
 use crate::{error::WallpaperError, Mode, Screen};
 use dbus::blocking::Connection;
 use serde::Deserialize;
-use serde_json;
 use std::time::Duration;
+use std::fmt::Write as _;
 
 #[derive(Deserialize)]
 struct KdeDesktop {
@@ -51,7 +51,7 @@ for (const desktop of desktops()) {
 			Mode::Stretch => 0,
 			Mode::Tile => 3,
 		};
-		command += &format!(
+		write!(command,
 			r#"
 	if (desktop.id === {}){{
 		desktop.writeConfig("FillMode", {});
@@ -60,7 +60,7 @@ for (const desktop of desktops()) {
 			screen.name,
 			mode,
 			screen.wallpaper.unwrap().to_str().unwrap()
-		);
+		).unwrap();
 	}
 	command += r#"
 }"#;
