@@ -15,15 +15,15 @@
 //!
 //! | enviroment | set wallpaper | set wallpaper per screen | requirements |
 //! --- | :---: | :---:| --- |
-//! |Windows                     | ✅ | ❌ | `features=["wallpaper"]` |
-//! |MacOS                       | ✅ | ❌ | `features=["wallpaper"]` |
-//! |X11                         | ✅ | ✅ | [xwallpaper] |
-//! |Budgie(wayland)             | ✅ | ❌ | `features=["wallpaper"]` |
-//! |Deepin(wayland)             | ✅ | ❌ | `features=["wallpaper"]` |
-//! |GNOME(wayland)              | ✅ | ❌ | `features=["wallpaper"]` |
-//! |KDE                         | ✅ | ✅ | [xrandr], [dbus] |
-//! |Mate(wayland)               | ✅ | ❌ | `features=["wallpaper"]` |
-//! |Sway                        | ✅ | ❌ | `features=["wallpaper"]`, [swaybg] |
+//! |Windows                     | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
+//! |MacOS                       | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
+//! |X11                         | ✅ | ✅ | [xwallpaper], [libxrandr](normally already installed) |
+//! |Budgie(wayland)             | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
+//! |Deepin(wayland)             | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
+//! |GNOME(wayland)              | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
+//! |KDE                         | ✅ | ✅ | [dbus](normally already installed)|
+//! |Mate(wayland)               | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
+//! |Sway                        | ✅ | ❌ | `features=["wallpaper"]`|
 //! |some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 //!
 //! The information about the currently supported features are also provided by [`Enviroment`].
@@ -69,7 +69,7 @@
 //!  [wallpaper]: https://crates.io/crates/wallpaper
 //!  [wall]: https://crates.io/crates/wall
 //!  [xwallpaper]: https://github.com/stoeckmann/xwallpaper
-//!  [xrandr]: https://gitlab.freedesktop.org/xorg/app/xrandr
+//!  [libxrandr]: https://gitlab.freedesktop.org/xorg/app/xrandr
 //!  [dbus]: https://gitlab.freedesktop.org/dbus/dbus
 //!  [swaybg]: https://github.com/swaywm/swaybg
 
