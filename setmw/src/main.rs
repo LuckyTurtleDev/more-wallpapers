@@ -22,7 +22,7 @@ where
 }
 
 #[derive(Debug, Parser)]
-pub struct SetAllOpt {
+pub struct SetVecOpt {
 	#[clap(required = true)]
 	images: Vec<String>,
 }
@@ -41,10 +41,12 @@ pub struct SetOpt {
 enum Opt {
 	/// list avaible screens and other information
 	List,
-	/// set all screens to the given wallpaper(s)
-	SetAll(SetAllOpt),
+	/// set all screens to the given list wallpaper(s)
+	SetVec(SetVecOpt),
+	/*
 	/// set differnt wallpaper per screen
 	Set(SetOpt),
+	*/
 }
 fn list() -> anyhow::Result<()> {
 	let builder = WallpaperBuilder::new().to_ah()?;
@@ -61,6 +63,7 @@ fn list() -> anyhow::Result<()> {
 	Ok(())
 }
 
+/*
 fn set(opt: SetOpt) -> anyhow::Result<()> {
 	//validate input
 	if !(opt.screens.len() == opt.images.len() && (opt.screens.len() == opt.modes.len() || opt.modes.len() == 0)) {
@@ -79,8 +82,9 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 		.to_ah()?;
 	Ok(())
 }
+*/
 
-fn set_all(opt: SetAllOpt) -> anyhow::Result<()> {
+fn set_vec(opt: SetVecOpt) -> anyhow::Result<()> {
 	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, Mode::Crop).to_ah()?;
 	println!("The backgrounds have been set to the following wallpapers {used_wallpapers:?}");
 	Ok(())
@@ -89,8 +93,8 @@ fn set_all(opt: SetAllOpt) -> anyhow::Result<()> {
 fn main() {
 	let result = match Opt::parse() {
 		Opt::List => list(),
-		Opt::Set(opt) => set(opt),
-		Opt::SetAll(opt) => set_all(opt),
+		//Opt::Set(opt) => set(opt),
+		Opt::SetVec(opt) => set_vec(opt),
 	};
 	if let Err(err) = result {
 		eprintln!("ERROR: {err}");
