@@ -59,7 +59,7 @@ for (const desktop of desktops()) {
 	}}"#,
 			screen.name,
 			mode,
-			screen.wallpaper.unwrap().to_str().unwrap()
+			screen.wallpaper.as_ref().unwrap().as_str()
 		)
 		.unwrap();
 	}

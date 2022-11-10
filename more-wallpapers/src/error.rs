@@ -1,4 +1,6 @@
-use std::{env, io};
+#[cfg(target_os = "linux")]
+use std::env;
+use std::io;
 use thiserror::Error;
 
 #[cfg(target_os = "linux")]

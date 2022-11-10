@@ -30,7 +30,7 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), CommandError> {
 			"--output",
 			&screen.name,
 			&format!("--{mode}"),
-			screen.wallpaper.unwrap().to_str().unwrap(),
+			screen.wallpaper.as_ref().unwrap().as_str(),
 		]);
 	}
 	let out = command.output()?;

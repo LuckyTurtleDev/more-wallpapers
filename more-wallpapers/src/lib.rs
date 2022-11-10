@@ -155,7 +155,7 @@ impl Enviroment {
 #[derive(Clone, Debug)]
 pub struct Screen {
 	pub name: String,
-	wallpaper: Option<std::path::PathBuf>,
+	wallpaper: Option<Utf8PathBuf>,
 	mode: Option<Mode>,
 }
 

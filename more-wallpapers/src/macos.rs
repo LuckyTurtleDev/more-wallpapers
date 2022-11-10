@@ -13,6 +13,6 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 }
 
 pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), WallpaperError> {
-	wallpaper::set_from_path(builder.screens[0].wallpaper.as_ref().unwrap().to_str().unwrap())?;
+	wallpaper::set_from_path(builder.screens[0].wallpaper.as_ref().unwrap().as_str())?;
 	Ok(())
 }

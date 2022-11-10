@@ -1,5 +1,4 @@
 use crate::Screen;
-use wallpaper;
 
 pub(crate) fn get_screens() -> Vec<Screen> {
 	vec![Screen {
@@ -10,5 +9,5 @@ pub(crate) fn get_screens() -> Vec<Screen> {
 }
 
 pub(crate) fn set_screens(screen: Vec<Screen>) -> Result<(), Box<dyn std::error::Error>> {
-	wallpaper::set_from_path(screen[0].wallpaper.as_ref().unwrap().to_str().unwrap())
+	wallpaper::set_from_path(screen[0].wallpaper.as_ref().unwrap().as_str())
 }
