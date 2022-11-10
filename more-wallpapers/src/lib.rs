@@ -73,10 +73,8 @@
 //!  [dbus]: https://gitlab.freedesktop.org/dbus/dbus
 //!  [swaybg]: https://github.com/swaywm/swaybg
 
-use std::{
-	io,
-	path::{Path, PathBuf},
-};
+use camino::{Utf8Path, Utf8PathBuf};
+use std::io;
 use strum_macros::{Display, EnumString};
 
 pub mod error;
@@ -211,15 +209,15 @@ impl WallpaperBuilder {
 	/// # Ok(())}
 	pub fn set_wallapers<F, P>(mut self, mut f: F) -> Result<(), WallpaperError>
 	where
-		P: AsRef<Path>,
+		P: AsRef<Utf8Path>,
 		F: FnMut(usize, &Screen) -> (P, Mode),
 	{
 		for (i, mut screen) in self.screens.iter_mut().enumerate() {
 			let tuple = f(i, screen);
 			let path = tuple.0.as_ref();
-			let path = path.canonicalize().context(path.to_string_lossy())?;
+			let path = path.canonicalize_utf8().context(path)?;
 			if !path.exists() {
-				return Err(io::Error::from(io::ErrorKind::NotFound)).context(path.to_string_lossy());
+				return Err(io::Error::from(io::ErrorKind::NotFound)).context(path);
 			}
 			screen.wallpaper = Some(path);
 			screen.mode = Some(tuple.1)
@@ -242,9 +240,9 @@ impl WallpaperBuilder {
 	/// println!("background was set to the following wallpapers {used_wallpapers:?}");
 	/// # Ok(())}
 	/// ```
-	pub fn set_wallpapers_from_vec<P>(self, wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
+	pub fn set_wallpapers_from_vec<P>(self, wallpapers: Vec<P>, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 	where
-		P: AsRef<Path>,
+		P: AsRef<Utf8Path>,
 	{
 		let mut used_wallpapers = Vec::new();
 		self.set_wallapers(|i, _| {
@@ -259,9 +257,13 @@ impl WallpaperBuilder {
 	///but map the wallpapers randomly to the screens.
 	///Selecting the same wallpaper multiple time will be avoid, if this is possible.
 	#[cfg(feature = "rand")]
-	pub fn set_random_wallpapers_from_vec<P>(self, wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
+	pub fn set_random_wallpapers_from_vec<P>(
+		self,
+		wallpapers: Vec<P>,
+		mode: Mode,
+	) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 	where
-		P: AsRef<Path>,
+		P: AsRef<Utf8Path>,
 		P: Clone,
 	{
 		let mut rng = rand::thread_rng();
@@ -298,9 +300,9 @@ impl WallpaperBuilder {
 /// println!("background was set to the following wallpapers {used_wallpapers:?}");
 /// # Ok(())}
 /// ```
-pub fn set_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
+pub fn set_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 where
-	P: AsRef<Path>,
+	P: AsRef<Utf8Path>,
 {
 	let builder = WallpaperBuilder::new()?;
 	builder.set_wallpapers_from_vec(wallpapers, mode)
@@ -310,9 +312,9 @@ where
 ///but map the wallpapers randomly to the screens.
 ///Selecting the same wallpaper multiple time will be avoid, if this is possible.
 #[cfg(feature = "rand")]
-pub fn set_random_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<PathBuf>, WallpaperError>
+pub fn set_random_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 where
-	P: AsRef<Path>,
+	P: AsRef<Utf8Path>,
 	P: Clone,
 {
 	let builder = WallpaperBuilder::new()?;

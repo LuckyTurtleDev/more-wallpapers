@@ -12,6 +12,7 @@ description= "crossplatform library to set desktop wallpaper per screen"
 
 
 [dependencies]
+camino = "1.1"
 rand = { version = "0.8.5", features = ["alloc"], optional = true }
 strum = "0.24"
 strum_macros = "0.24"
