@@ -4,8 +4,6 @@ use std::io;
 use thiserror::Error;
 
 #[cfg(target_os = "linux")]
-use dbus;
-#[cfg(target_os = "linux")]
 use serde_json;
 #[cfg(target_os = "linux")]
 use xrandr;
@@ -39,7 +37,7 @@ pub enum WallpaperError {
 
 	#[cfg(target_os = "linux")]
 	#[error("Dbus error: {0}")]
-	Dbus(#[from] dbus::Error),
+	Dbus(#[from] rustbus::connection::Error),
 
 	#[cfg(target_os = "linux")]
 	#[error("Dbus error: {0}")]
