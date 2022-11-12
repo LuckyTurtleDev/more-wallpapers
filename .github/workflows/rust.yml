@@ -50,5 +50,5 @@ jobs:
     container: { image: ghcr.io/msrd0/cargo-doc2readme }
     steps:
     - uses: actions/checkout@v3
-    - run: ls
+    - run: cd more-wallpapers
     - run: cargo doc2readme --check
