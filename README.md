@@ -24,7 +24,7 @@ Currently the following enviroments are supported:
 The information about the currently supported features are also provided by the [`Enviroment`][__link9] enum.
 
 
-#### QuickStart / Examples:
+### QuickStart / Examples:
 
 If you would like to set only a different wallpaper for each screen and don’t care which wallpaper is used on which screen, you can use [`set_wallpapers_from_vec()`][__link10] or [`set_random_wallpapers_from_vec()`][__link11]:
 
@@ -61,7 +61,7 @@ WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG8OS-vvjt7NWG4TO9g3EvN1bG_vYFzucHWl_G1HCoq8kIOd-YWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG-q_ifkYbykDG6jYqfB7tTwIG6Iqwk50WXPpG4-hgAqV1y5YYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec

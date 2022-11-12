@@ -31,7 +31,7 @@
 //!
 //! The information about the currently supported features are also provided by the [`Enviroment`] enum.
 //!
-//! ### QuickStart / Examples:
+//! ## QuickStart / Examples:
 //! If you would like to set only a different wallpaper for each screen and don't care
 //! which wallpaper is used on which screen,
 //! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
