@@ -48,5 +48,6 @@ jobs:
   doc2readme:
     runs-on: ubuntu-latest
     container: { image: ghcr.io/msrd0/cargo-doc2readme }
-    steps:  
+    steps:
+    - uses: actions/checkout@v3
     - run: cargo doc2readme --check
