@@ -15,21 +15,23 @@
 //!
 //! | enviroment | set wallpaper | set wallpaper per screen | requirements |
 //! --- | :---: | :---:| --- |
-//! |Windows                     | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
-//! |MacOS                       | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
-//! |X11                         | ✅ | ✅ | [xwallpaper], [libxrandr](normally already installed) |
-//! |Budgie(wayland)             | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
-//! |Deepin(wayland)             | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
-//! |GNOME(wayland)              | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
-//! |KDE                         | ✅ | ✅ | [dbus](normally already installed)|
-//! |Mate(wayland)               | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper] crate |
-//! |Sway                        | ✅ | ❌ | `features=["wallpaper"]`|
-//! |some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
+//! |Windows                     | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |MacOS                       | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |X11                         | ✅ | ✅ | [xwallpaper], [libxrandr]²|
+//! |Budgie(wayland)             | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |Deepin(wayland)             | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |GNOME(wayland)              | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |KDE                         | ✅ | ✅ | [dbus]²|
+//! |Mate(wayland)               | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |Sway                        | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`¹, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 //!
-//! The information about the currently supported features are also provided by [`Enviroment`].
+//! ¹ Please check also the requirements of the [wallpaper] crate.</br>
+//! ² normally already installed.
 //!
-//! <br/><br/>
-//! **QuickStart / Examples:**<br/>
+//! The information about the currently supported features are also provided by the [`Enviroment`] enum.
+//!
+//! ### QuickStart / Examples:
 //! If you would like to set only a different wallpaper for each screen and don't care
 //! which wallpaper is used on which screen,
 //! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
@@ -37,7 +39,7 @@
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::Mode;
 //!
-//! let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+//! let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
 //! more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop)?;
 //! # Ok(())}
 //! ```
@@ -51,7 +53,7 @@
 //! WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 //! 	if i == 0 {
 //! 		return (
-//! 			"/usr/share/wallpapers/first.jpg".to_owned(),
+//! 			"first.jpg".to_owned(),
 //! 			Mode::default(),
 //! 		);
 //! 	}

@@ -8,30 +8,35 @@ Currently the following enviroments are supported:
 
 | enviroment | set wallpaper | set wallpaper per screen | requirements |
 | --- |:---:|:---:| --- |
-| Windows | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper][__link4] crate |
-| MacOS | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper][__link5] crate |
-| X11 | ✅ | ✅ | [xwallpaper][__link6], [libxrandr][__link7](normally already installed) |
-| Budgie(wayland) | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper][__link8] crate |
-| Deepin(wayland) | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper][__link9] crate |
-| GNOME(wayland) | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper][__link10] crate |
-| KDE | ✅ | ✅ | [dbus][__link11](normally already installed) |
-| Mate(wayland) | ✅ | ❌ | `features=["wallpaper"]`, see [wallpaper][__link12] crate |
-| Sway | ✅ | ❌ | `features=["wallpaper"]` |
-| some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`, [swaybg][__link13], dektop must support wlr-layer-shell protocol and wl_output version 4 |
+| Windows | ✅ | ❌ | `features=["wallpaper"]`¹ |
+| MacOS | ✅ | ❌ | `features=["wallpaper"]`¹ |
+| X11 | ✅ | ✅ | [xwallpaper][__link4], [libxrandr][__link5]² |
+| Budgie(wayland) | ✅ | ❌ | `features=["wallpaper"]`¹ |
+| Deepin(wayland) | ✅ | ❌ | `features=["wallpaper"]`¹ |
+| GNOME(wayland) | ✅ | ❌ | `features=["wallpaper"]`¹ |
+| KDE | ✅ | ✅ | [dbus][__link6]² |
+| Mate(wayland) | ✅ | ❌ | `features=["wallpaper"]`¹ |
+| Sway | ✅ | ❌ | `features=["wallpaper"]`¹ |
+| some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`¹, [swaybg][__link7], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 
-The information about the currently supported features are also provided by [`Enviroment`][__link14].
+¹ Please check also the requirements of the [wallpaper][__link8] crate.</br> ² normally already installed.
 
-<br/><br/> **QuickStart / Examples:**<br/> If you would like to set only a different wallpaper for each screen and don’t care which wallpaper is used on which screen, you can use [`set_wallpapers_from_vec()`][__link15] or [`set_random_wallpapers_from_vec()`][__link16]:
+The information about the currently supported features are also provided by the [`Enviroment`][__link9] enum.
+
+
+#### QuickStart / Examples:
+
+If you would like to set only a different wallpaper for each screen and don’t care which wallpaper is used on which screen, you can use [`set_wallpapers_from_vec()`][__link10] or [`set_random_wallpapers_from_vec()`][__link11]:
 
 
 ```rust
 use more_wallpapers::Mode;
 
-let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
 more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop)?;
 ```
 
-For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link17]:
+For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link12]:
 
 
 ```rust
@@ -41,7 +46,7 @@ let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers
 WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 	if i == 0 {
 		return (
-			"/usr/share/wallpapers/first.jpg".to_owned(),
+			"first.jpg".to_owned(),
 			Mode::default(),
 		);
 	}
@@ -56,22 +61,17 @@ WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEGz0FmfOFN5QwGxUEXVw4WtNdGzH5ENW5rpdFG8aRKt3nqRL4YWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG8OS-vvjt7NWG4TO9g3EvN1bG_vYFzucHWl_G1HCoq8kIOd-YWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
- [__link10]: https://crates.io/crates/wallpaper
- [__link11]: https://gitlab.freedesktop.org/dbus/dbus
- [__link12]: https://crates.io/crates/wallpaper
- [__link13]: https://github.com/swaywm/swaybg
- [__link14]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/enum.Enviroment.html
- [__link15]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec
- [__link16]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_random_wallpapers_from_vec
- [__link17]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/struct.WallpaperBuilder.html
+ [__link10]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec
+ [__link11]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_random_wallpapers_from_vec
+ [__link12]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/struct.WallpaperBuilder.html
  [__link2]: https://crates.io/crates/wallpaper
  [__link3]: https://crates.io/crates/wallpaper
- [__link4]: https://crates.io/crates/wallpaper
- [__link5]: https://crates.io/crates/wallpaper
- [__link6]: https://github.com/stoeckmann/xwallpaper
- [__link7]: https://gitlab.freedesktop.org/xorg/app/xrandr
+ [__link4]: https://github.com/stoeckmann/xwallpaper
+ [__link5]: https://gitlab.freedesktop.org/xorg/app/xrandr
+ [__link6]: https://gitlab.freedesktop.org/dbus/dbus
+ [__link7]: https://github.com/swaywm/swaybg
  [__link8]: https://crates.io/crates/wallpaper
- [__link9]: https://crates.io/crates/wallpaper
+ [__link9]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/enum.Enviroment.html
