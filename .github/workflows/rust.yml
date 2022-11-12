@@ -21,7 +21,7 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo test --workspace --all-features
         env:
@@ -30,7 +30,7 @@ jobs:
   macos:
     runs-on:  macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo test --workspace --all-features
         env:
@@ -39,7 +39,7 @@ jobs:
   rustfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: rustfmt
@@ -47,8 +47,9 @@ jobs:
       
   doc2readme:
     runs-on: ubuntu-latest
-    container: { image: ghcr.io/msrd0/cargo-doc2readme }
     steps:
     - uses: actions/checkout@v3
-    - run: cd more-wallpapers
-    - run: cargo doc2readme --check
+    - uses: docker://ghcr.io/msrd0/cargo-doc2readme
+      with:
+        entrypoint: cargo
+        args: doc2readme --check --manifest-path more-wallpapers/Cargo.toml
