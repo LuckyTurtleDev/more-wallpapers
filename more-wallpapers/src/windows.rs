@@ -5,6 +5,7 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 		name: "Unknow".into(),
 		wallpaper: None,
 		mode: None,
+		active: true,
 	}];
 	Ok(WallpaperBuilder {
 		enviroment: Enviroment::Windows,

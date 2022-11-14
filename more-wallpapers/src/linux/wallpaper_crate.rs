@@ -3,6 +3,7 @@ use crate::Screen;
 pub(crate) fn get_screens() -> Vec<Screen> {
 	vec![Screen {
 		name: "Unknow".into(),
+		active: true,
 		wallpaper: None,
 		mode: None,
 	}]

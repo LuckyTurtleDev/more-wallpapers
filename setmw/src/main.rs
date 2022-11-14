@@ -85,7 +85,8 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 */
 
 fn set_vec(opt: SetVecOpt) -> anyhow::Result<()> {
-	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, Mode::Crop).to_ah()?;
+	let default = opt.images.first().unwrap().to_owned();
+	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, default, Mode::Crop).to_ah()?;
 	println!("The backgrounds have been set to the following wallpapers {used_wallpapers:?}");
 	Ok(())
 }

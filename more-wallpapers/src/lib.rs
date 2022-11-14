@@ -52,10 +52,7 @@
 //! let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
 //! WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 //! 	if i == 0 {
-//! 		return (
-//! 			"first.jpg".to_owned(),
-//! 			Mode::default(),
-//! 		);
+//! 		return ("first.jpg".to_owned(), Mode::default());
 //! 	}
 //! 	if screen.name == "HDMI1" {
 //! 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
@@ -78,6 +75,7 @@
 use camino::{Utf8Path, Utf8PathBuf};
 use std::io;
 use strum_macros::{Display, EnumString};
+use once_cell::sync::Lazy;
 
 pub mod error;
 #[cfg(target_os = "linux")]
@@ -157,13 +155,18 @@ impl Enviroment {
 #[derive(Clone, Debug)]
 pub struct Screen {
 	pub name: String,
+	/// current wallpaper of the screen
 	wallpaper: Option<Utf8PathBuf>,
+	/// current mode of the screen
 	mode: Option<Mode>,
+	/// indicates if screen is active,
+	/// if false screen is disconneted or is a default
+	active: bool,
 }
 
 ///Builder for advance Wallpaper settings and informations.
 ///This struct should not be stored for a long time, because it can become outdated if the user connect or disconnect monitors or change the Display settings.
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct WallpaperBuilder {
 	screens: Vec<Screen>,
 	enviroment: Enviroment,
@@ -177,6 +180,16 @@ impl WallpaperBuilder {
 	///Return the count of active screens. This does not include disable screens.
 	pub fn screen_count(&self) -> usize {
 		self.screens.len()
+	}
+	
+	///Return the count of active screens. This does not include disable screens.
+	pub fn active_screen_count(&self) -> usize {
+		let mut i =0;
+		for screen in self.screens.iter()
+		{
+			if screen.active {i+=1}
+		}
+		i
 	}
 
 	///Return the current Destkop enviroment.
@@ -212,10 +225,10 @@ impl WallpaperBuilder {
 	pub fn set_wallapers<F, P>(mut self, mut f: F) -> Result<(), WallpaperError>
 	where
 		P: AsRef<Utf8Path>,
-		F: FnMut(usize, &Screen) -> (P, Mode),
+		F: FnMut(&Screen) -> (P, Mode),
 	{
-		for (i, mut screen) in self.screens.iter_mut().enumerate() {
-			let tuple = f(i, screen);
+		for mut screen in self.screens.iter_mut() {
+			let tuple = f(screen);
 			let path = tuple.0.as_ref();
 			let path = path.canonicalize_utf8().context(path)?;
 			if !path.exists() {
@@ -242,13 +255,24 @@ impl WallpaperBuilder {
 	/// println!("background was set to the following wallpapers {used_wallpapers:?}");
 	/// # Ok(())}
 	/// ```
-	pub fn set_wallpapers_from_vec<P>(self, wallpapers: Vec<P>, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
+	pub fn set_wallpapers_from_vec<P>(
+		self,
+		wallpapers: Vec<P>,
+		default_wallpaper: P,
+		mode: Mode,
+	) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 	where
 		P: AsRef<Utf8Path>,
 	{
 		let mut used_wallpapers = Vec::new();
-		self.set_wallapers(|i, _| {
-			let wallpaper = wallpapers[i % wallpapers.len()].as_ref();
+		let mut i = 0;
+		self.set_wallapers(|screen| {
+			let wallpaper = if screen.active {
+				i += 1;
+				wallpapers[i % wallpapers.len()].as_ref()
+			} else {
+				default_wallpaper.as_ref()
+			};
 			used_wallpapers.push(wallpaper.to_owned());
 			(wallpaper, mode)
 		})?;
@@ -262,6 +286,7 @@ impl WallpaperBuilder {
 	pub fn set_random_wallpapers_from_vec<P>(
 		self,
 		wallpapers: Vec<P>,
+		default_wallpaper: P,
 		mode: Mode,
 	) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 	where
@@ -272,7 +297,7 @@ impl WallpaperBuilder {
 		let wallpapers = if wallpapers.len() < self.screen_count() {
 			//extend vec to match length of screen_count
 			let mut new_wallpapers = Vec::new();
-			while new_wallpapers.len() < self.screen_count() {
+			while new_wallpapers.len() < self.active_screen_count() {
 				let count = (self.screen_count() - new_wallpapers.len()).min(wallpapers.len());
 				let mut add = wallpapers.clone().into_iter().choose_multiple(&mut rng, count);
 				new_wallpapers.append(&mut add);
@@ -283,7 +308,7 @@ impl WallpaperBuilder {
 		};
 		let mut choose_wallpapers = wallpapers.into_iter().choose_multiple(&mut rng, self.screen_count());
 		choose_wallpapers.shuffle(&mut rng);
-		self.set_wallpapers_from_vec(choose_wallpapers, mode)
+		self.set_wallpapers_from_vec(choose_wallpapers, default_wallpaper, mode)
 	}
 }
 
@@ -302,23 +327,23 @@ impl WallpaperBuilder {
 /// println!("background was set to the following wallpapers {used_wallpapers:?}");
 /// # Ok(())}
 /// ```
-pub fn set_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
+pub fn set_wallpapers_from_vec<P>(wallpapers: Vec<P>, default_wallpaper: P, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 where
 	P: AsRef<Utf8Path>,
 {
 	let builder = WallpaperBuilder::new()?;
-	builder.set_wallpapers_from_vec(wallpapers, mode)
+	builder.set_wallpapers_from_vec(wallpapers, default_wallpaper, mode)
 }
 
 ///Like [`set_wallpapers_from_vec`],
 ///but map the wallpapers randomly to the screens.
 ///Selecting the same wallpaper multiple time will be avoid, if this is possible.
 #[cfg(feature = "rand")]
-pub fn set_random_wallpapers_from_vec<P>(wallpapers: Vec<P>, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
+pub fn set_random_wallpapers_from_vec<P>(wallpapers: Vec<P>, default_wallpaper: P, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 where
 	P: AsRef<Utf8Path>,
 	P: Clone,
 {
 	let builder = WallpaperBuilder::new()?;
-	builder.set_random_wallpapers_from_vec(wallpapers, mode)
+	builder.set_random_wallpapers_from_vec(wallpapers, default_wallpaper, mode)
 }
