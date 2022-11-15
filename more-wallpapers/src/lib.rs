@@ -73,9 +73,9 @@
 //!  [swaybg]: https://github.com/swaywm/swaybg
 
 use camino::{Utf8Path, Utf8PathBuf};
+use once_cell::sync::Lazy;
 use std::io;
 use strum_macros::{Display, EnumString};
-use once_cell::sync::Lazy;
 
 pub mod error;
 #[cfg(target_os = "linux")]
@@ -181,13 +181,14 @@ impl WallpaperBuilder {
 	pub fn screen_count(&self) -> usize {
 		self.screens.len()
 	}
-	
+
 	///Return the count of active screens. This does not include disable screens.
 	pub fn active_screen_count(&self) -> usize {
-		let mut i =0;
-		for screen in self.screens.iter()
-		{
-			if screen.active {i+=1}
+		let mut i = 0;
+		for screen in self.screens.iter() {
+			if screen.active {
+				i += 1
+			}
 		}
 		i
 	}
@@ -267,12 +268,11 @@ impl WallpaperBuilder {
 		let mut used_wallpapers = Vec::new();
 		let mut i = 0;
 		self.set_wallapers(|screen| {
-			let wallpaper = if screen.active {
-				i += 1;
-				wallpapers[i % wallpapers.len()].as_ref()
-			} else {
-				default_wallpaper.as_ref()
-			};
+			if !screen.active {
+				return (default_wallpaper.as_ref(), mode);
+			}
+			let wallpaper = wallpapers[i % wallpapers.len()].as_ref();
+			i += 1;
 			used_wallpapers.push(wallpaper.to_owned());
 			(wallpaper, mode)
 		})?;
@@ -327,7 +327,11 @@ impl WallpaperBuilder {
 /// println!("background was set to the following wallpapers {used_wallpapers:?}");
 /// # Ok(())}
 /// ```
-pub fn set_wallpapers_from_vec<P>(wallpapers: Vec<P>, default_wallpaper: P, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
+pub fn set_wallpapers_from_vec<P>(
+	wallpapers: Vec<P>,
+	default_wallpaper: P,
+	mode: Mode,
+) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 where
 	P: AsRef<Utf8Path>,
 {
@@ -339,7 +343,11 @@ where
 ///but map the wallpapers randomly to the screens.
 ///Selecting the same wallpaper multiple time will be avoid, if this is possible.
 #[cfg(feature = "rand")]
-pub fn set_random_wallpapers_from_vec<P>(wallpapers: Vec<P>, default_wallpaper: P, mode: Mode) -> Result<Vec<Utf8PathBuf>, WallpaperError>
+pub fn set_random_wallpapers_from_vec<P>(
+	wallpapers: Vec<P>,
+	default_wallpaper: P,
+	mode: Mode,
+) -> Result<Vec<Utf8PathBuf>, WallpaperError>
 where
 	P: AsRef<Utf8Path>,
 	P: Clone,
