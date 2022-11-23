@@ -50,10 +50,10 @@ enum Opt {
 }
 fn list() -> anyhow::Result<()> {
 	let builder = WallpaperBuilder::new().to_ah()?;
-	println!("enviroment: {}", builder.enviroment());
+	println!("environment: {}", builder.environment());
 	println!(
 		"support various wallpaper: {}",
-		builder.enviroment().support_various_wallpaper()
+		builder.environment().support_various_wallpaper()
 	);
 	print!("activescreens:");
 	for screen in builder.screens() {

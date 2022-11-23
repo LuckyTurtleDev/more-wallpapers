@@ -5,15 +5,15 @@
 //! Yet another wallpaper crate, which can set a wallpapers per screen.
 //!
 //! The main feature over other crates like [wallpaper] or [wall] is the ability to set **different wallpapers** on different screens.
-//! Currently this feature is only implemented for some enviroments.
+//! Currently this feature is only implemented for some environments.
 //! Because of this you can enable the "wallpaper" feature,
 //! which uses the [wallpaper] crate as a fallback on unsupported environments.
 //! This means you can use the additonal features of this crate and
-//! still support the large amount of supported enviroments of the [wallpaper] crate.
+//! still support the large amount of supported environments of the [wallpaper] crate.
 //!
-//! Currently the following enviroments are supported:
+//! Currently the following environments are supported:
 //!
-//! | enviroment | set wallpaper | set wallpaper per screen | requirements |
+//! | environment | set wallpaper | set wallpaper per screen | requirements |
 //! --- | :---: | :---:| --- |
 //! |Windows                     | ✅ | ❌ | `features=["wallpaper"]`¹ |
 //! |MacOS                       | ✅ | ❌ | `features=["wallpaper"]`¹ |
@@ -29,7 +29,7 @@
 //! ¹ Please check also the requirements of the [wallpaper] crate.<br/>
 //! ² normally already installed.
 //!
-//! The information about the currently supported features are also provided by the [`Enviroment`] enum.
+//! The information about the currently supported features are also provided by the [`Environment`] enum.
 //!
 //! ## QuickStart / Examples:
 //! If you would like to set only a different wallpaper for each screen and don't care
@@ -167,10 +167,10 @@ pub enum Mode {
 }
 
 /// Represent the used operating system or dekstop.
-/// Inform about supported features, at the curren enviroment.
+/// Inform about supported features, at the curren environment.
 #[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
-pub enum Enviroment {
+pub enum Environment {
 	Kde,
 	#[cfg(feature = "wallpaper")]
 	LinuxWallpaperCrate,
@@ -180,8 +180,8 @@ pub enum Enviroment {
 	Windows,
 	X11,
 }
-impl Enviroment {
-	///return true, if the current enviroment does support various wallpaper on each screen
+impl Environment {
+	///return true, if the current environment does support various wallpaper on each screen
 	pub fn support_various_wallpaper(&self) -> bool {
 		match self {
 			Self::Kde => true,
@@ -214,7 +214,7 @@ pub struct Screen {
 #[derive(Debug)]
 pub struct WallpaperBuilder {
 	screens: Vec<Screen>,
-	enviroment: Enviroment,
+	environment: Environment,
 }
 
 impl WallpaperBuilder {
@@ -232,9 +232,9 @@ impl WallpaperBuilder {
 		self.screens.iter().filter(|screen| screen.active).count()
 	}
 
-	///Return the current Destkop enviroment.
-	pub fn enviroment(&self) -> Enviroment {
-		self.enviroment
+	///Return the current Destkop environment.
+	pub fn environment(&self) -> Environment {
+		self.environment
 	}
 
 	pub fn screens(&self) -> Vec<String> {

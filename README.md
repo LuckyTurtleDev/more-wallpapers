@@ -2,11 +2,11 @@
 
 Yet another wallpaper crate, which can set a wallpapers per screen.
 
-The main feature over other crates like [wallpaper][__link0] or [wall][__link1] is the ability to set **different wallpapers** on different screens. Currently this feature is only implemented for some enviroments. Because of this you can enable the “wallpaper” feature, which uses the [wallpaper][__link2] crate as a fallback on unsupported environments. This means you can use the additonal features of this crate and still support the large amount of supported enviroments of the [wallpaper][__link3] crate.
+The main feature over other crates like [wallpaper][__link0] or [wall][__link1] is the ability to set **different wallpapers** on different screens. Currently this feature is only implemented for some environments. Because of this you can enable the “wallpaper” feature, which uses the [wallpaper][__link2] crate as a fallback on unsupported environments. This means you can use the additonal features of this crate and still support the large amount of supported environments of the [wallpaper][__link3] crate.
 
-Currently the following enviroments are supported:
+Currently the following environments are supported:
 
-| enviroment | set wallpaper | set wallpaper per screen | requirements |
+| environment | set wallpaper | set wallpaper per screen | requirements |
 | --- |:---:|:---:| --- |
 | Windows | ✅ | ❌ | `features=["wallpaper"]`¹ |
 | MacOS | ✅ | ❌ | `features=["wallpaper"]`¹ |
@@ -21,7 +21,7 @@ Currently the following enviroments are supported:
 
 ¹ Please check also the requirements of the [wallpaper][__link8] crate.<br/> ² normally already installed.
 
-The information about the currently supported features are also provided by the [`Enviroment`][__link9] enum.
+The information about the currently supported features are also provided by the [`Environment`][__link9] enum.
 
 
 ### QuickStart / Examples:
@@ -62,7 +62,7 @@ WallpaperBuilder::new()?.set_wallapers(|screen| {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG6f3eUuuhQyfG96BEsJNxexSGzZ9ERWIzXWHG6oN_zajJeTUYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG_qXcExzJQaeG1eWVcXQdMFHG7C9odv-ZE1xG7vvcW-4hFZgYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec
@@ -76,4 +76,4 @@ WallpaperBuilder::new()?.set_wallapers(|screen| {
  [__link6]: https://gitlab.freedesktop.org/dbus/dbus
  [__link7]: https://github.com/swaywm/swaybg
  [__link8]: https://crates.io/crates/wallpaper
- [__link9]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/enum.Enviroment.html
+ [__link9]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/enum.Environment.html
