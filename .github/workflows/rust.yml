@@ -45,7 +45,7 @@ jobs:
       - run: cargo fmt --all -- --check
       
   doc2readme:
-    runs-on: ubuntu-latest:nightly
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - uses: docker://ghcr.io/msrd0/cargo-doc2readme
