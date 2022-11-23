@@ -46,7 +46,7 @@ use more_wallpapers::{Mode, WallpaperBuilder};
 
 let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
 let mut i = 0;
-WallpaperBuilder::new()?.set_wallapers(|screen| {
+WallpaperBuilder::new()?.set_wallpapers(|screen| {
 	i += 1;
 	if i == 1 {
 		return ("first.jpg".to_owned(), Mode::default());
@@ -62,7 +62,7 @@ WallpaperBuilder::new()?.set_wallapers(|screen| {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG_qXcExzJQaeG1eWVcXQdMFHG7C9odv-ZE1xG7vvcW-4hFZgYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEGxx2SjxLDI8cG259aafMiiZ-G9AFtAbGXAr1Gxd4WYixdpQWYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec

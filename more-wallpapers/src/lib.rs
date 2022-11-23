@@ -63,7 +63,7 @@ use more_wallpapers::{Mode, WallpaperBuilder};
 
 let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
 let mut i = 0;
-WallpaperBuilder::new()?.set_wallapers(|screen| {
+WallpaperBuilder::new()?.set_wallpapers(|screen| {
 	i += 1;
 	if i == 1 {
 		return ("first.jpg".to_owned(), Mode::default());
@@ -248,7 +248,7 @@ impl WallpaperBuilder {
 	///Set background to wallpapers, witch will be selected by the given closure.
 	///The index oft screen and the current screen are passed to the closure.x
 	#[doc = doc_WallpaperBuilder_example!()]
-	pub fn set_wallapers<F, P>(mut self, mut f: F) -> Result<(), WallpaperError>
+	pub fn set_wallpapers<F, P>(mut self, mut f: F) -> Result<(), WallpaperError>
 	where
 		P: AsRef<Utf8Path>,
 		F: FnMut(&Screen) -> (P, Mode),
@@ -278,7 +278,7 @@ impl WallpaperBuilder {
 	{
 		let mut used_wallpapers = Vec::new();
 		let mut i = 0;
-		self.set_wallapers(|screen| {
+		self.set_wallpapers(|screen| {
 			if !screen.active {
 				return (default_wallpaper.as_ref(), mode);
 			}
