@@ -26,7 +26,7 @@
 //! |Sway                        | ✅ | ❌ | `features=["wallpaper"]`¹ |
 //! |some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`¹, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 //!
-//! ¹ Please check also the requirements of the [wallpaper] crate.</br>
+//! ¹ Please check also the requirements of the [wallpaper] crate.<br/>
 //! ² normally already installed.
 //!
 //! The information about the currently supported features are also provided by the [`Enviroment`] enum.
@@ -43,7 +43,7 @@
 //! more_wallpapers::set_wallpapers_from_vec(images, "default.jpg", Mode::Crop)?;
 //! # Ok(())}
 //! ```
-//! The `default_wallpaper` param is used as wallpaper for [inactive screens](Screen::active).
+//! The `"default.jpg"` is used as wallpaper for [inactive screens](Screen::active).
 //! If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
 //!
 //! For advanced wallpaper settings you can use the [`WallpaperBuilder`]:
@@ -64,7 +64,7 @@ use more_wallpapers::{Mode, WallpaperBuilder};
 let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
 let mut i = 0;
 WallpaperBuilder::new()?.set_wallapers(|screen| {
-	i+= 1;
+	i += 1;
 	if i == 1 {
 		return ("first.jpg".to_owned(), Mode::default());
 	}

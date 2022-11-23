@@ -19,7 +19,7 @@ Currently the following enviroments are supported:
 | Sway | ✅ | ❌ | `features=["wallpaper"]`¹ |
 | some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`¹, [swaybg][__link7], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 
-¹ Please check also the requirements of the [wallpaper][__link8] crate.</br> ² normally already installed.
+¹ Please check also the requirements of the [wallpaper][__link8] crate.<br/> ² normally already installed.
 
 The information about the currently supported features are also provided by the [`Enviroment`][__link9] enum.
 
@@ -36,7 +36,7 @@ let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
 more_wallpapers::set_wallpapers_from_vec(images, "default.jpg", Mode::Crop)?;
 ```
 
-The `default_wallpaper` param is used as wallpaper for [inactive screens][__link12]. If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
+The `"default.jpg"` is used as wallpaper for [inactive screens][__link12]. If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
 
 For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link13]:
 
@@ -47,7 +47,7 @@ use more_wallpapers::{Mode, WallpaperBuilder};
 let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
 let mut i = 0;
 WallpaperBuilder::new()?.set_wallapers(|screen| {
-	i+= 1;
+	i += 1;
 	if i == 1 {
 		return ("first.jpg".to_owned(), Mode::default());
 	}
@@ -62,7 +62,7 @@ WallpaperBuilder::new()?.set_wallapers(|screen| {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG90PL9X5JX5OG3UnH-XF6s_oGwB-CWSlQtyyG63AxQZ_KLHPYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG6f3eUuuhQyfG96BEsJNxexSGzZ9ERWIzXWHG6oN_zajJeTUYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec
