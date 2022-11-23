@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: docker://ghcr.io/msrd0/cargo-doc2readme
+    - uses: docker://ghcr.io/msrd0/cargo-doc2readme:nightly
       with:
         entrypoint: cargo
         args: doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
