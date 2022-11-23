@@ -95,7 +95,7 @@ macro_rules! doc_set_wallpapers_from_vec {
 			r#"
 Set the background of all screens to the wallpapers of `wallpapers`.
 The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`.
-The `default_wallpaper` param is used as wallpaper for [inactive screens](Screen::active).
+The `default_wallpaper` param is used if the given `wallpapers` vec is empty and as wallpaper for [inactive screens](Screen::active).
 Return a vec, with dose inlcude the path of the Wallpapers,
 witch was set as background.
 If the same wallpaper was set multiple times to different screens,
@@ -289,7 +289,11 @@ impl WallpaperBuilder {
 			if !screen.active {
 				return (default_wallpaper.as_ref(), mode);
 			}
-			let wallpaper = wallpapers[i % wallpapers.len()].as_ref();
+			let wallpaper = if wallpapers.is_empty() {
+				default_wallpaper.as_ref()
+			} else {
+				wallpapers[i % wallpapers.len()].as_ref()
+			};
 			i += 1;
 			used_wallpapers.push(wallpaper.to_owned());
 			(wallpaper, mode)
@@ -311,6 +315,10 @@ impl WallpaperBuilder {
 		P: AsRef<Utf8Path>,
 		P: Clone,
 	{
+		if wallpapers.is_empty() {
+			// set_wallpapers_from_vec() will deal the empty inupt
+			return self.set_wallpapers_from_vec(wallpapers, default_wallpaper, mode);
+		}
 		let mut rng = rand::thread_rng();
 		let wallpapers = if wallpapers.len() < self.screen_count() {
 			//extend vec to match length of screen_count
