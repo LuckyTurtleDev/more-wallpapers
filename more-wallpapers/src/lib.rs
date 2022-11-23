@@ -40,37 +40,83 @@
 //! use more_wallpapers::Mode;
 //!
 //! let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
-//! more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop)?;
+//! more_wallpapers::set_wallpapers_from_vec(images, "default.jpg", Mode::Crop)?;
 //! # Ok(())}
 //! ```
+//! The `default_wallpaper` param is used as wallpaper for [inactive screens](Screen::active).
+//! If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
 //!
 //! For advanced wallpaper settings you can use the [`WallpaperBuilder`]:
-//! ``` no_run
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
-//! use more_wallpapers::{Mode, WallpaperBuilder};
-//!
-//! let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-//! WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
-//! 	if i == 0 {
-//! 		return ("first.jpg".to_owned(), Mode::default());
-//! 	}
-//! 	if screen.name == "HDMI1" {
-//! 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
-//! 	}
-//! 	(
-//! 		fallback_images[i % fallback_images.len()].to_owned(),
-//! 		Mode::Tile,
-//! 	)
-//! })?;
-//! # Ok(())}
-//! ```
-//!
+#![doc = doc_WallpaperBuilder_example!()]
 //!  [wallpaper]: https://crates.io/crates/wallpaper
 //!  [wall]: https://crates.io/crates/wall
 //!  [xwallpaper]: https://github.com/stoeckmann/xwallpaper
 //!  [libxrandr]: https://gitlab.freedesktop.org/xorg/app/xrandr
 //!  [dbus]: https://gitlab.freedesktop.org/dbus/dbus
 //!  [swaybg]: https://github.com/swaywm/swaybg
+
+macro_rules! doc_WallpaperBuilder_example {
+	() => {
+		r#"``` no_run
+# fn main() -> Result<(), Box<dyn std::error::Error>> {
+use more_wallpapers::{Mode, WallpaperBuilder};
+
+let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
+let mut i = 0;
+WallpaperBuilder::new()?.set_wallapers(|screen| {
+	i+= 1;
+	if i == 1 {
+		return ("first.jpg".to_owned(), Mode::default());
+	}
+	if screen.name == "HDMI1" {
+		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
+	}
+	(
+		fallback_images[i % fallback_images.len()].to_owned(),
+		Mode::Tile,
+	)
+})?;
+# Ok(())}
+```
+"#
+	};
+}
+
+macro_rules! doc_set_wallpapers_from_vec {
+		(fn) => {
+			concat!(doc_set_wallpapers_from_vec!(@private head), "set_wallpapers_from_vec", doc_set_wallpapers_from_vec!(@private body),
+		doc_set_wallpapers_from_vec!(@private tail))
+		};
+		(builder) => {
+			concat!(doc_set_wallpapers_from_vec!(@private head), "WallpaperBuilder", doc_set_wallpapers_from_vec!(@private body), "WallpaperBuilder::new()?.",
+		doc_set_wallpapers_from_vec!(@private tail))
+		};
+		(@private head) => {
+			r#"
+Set the background of all screens to the wallpapers of `wallpapers`.
+The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`.
+The `default_wallpaper` param is used as wallpaper for [inactive screens](Screen::active).
+Return a vec, with dose inlcude the path of the Wallpapers,
+witch was set as background.
+If the same wallpaper was set multiple times to different screens,
+the return value does also include the wallpaper multiple times.
+```no_run
+# fn main() -> Result<(), Box<dyn std::error::Error>> {
+use more_wallpapers::{"#
+		};
+		(@private body) => {
+			r#", Mode};
+
+let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
+let used_wallpapers = "#
+		};
+		(@private tail) => {
+			r#"set_wallpapers_from_vec(images, "default.png", Mode::Crop)?;
+println!("background was set to the following wallpapers {used_wallpapers:?}");
+# Ok(())}
+```"#
+		};
+	}
 
 use camino::{Utf8Path, Utf8PathBuf};
 use once_cell::sync::Lazy;
@@ -156,12 +202,12 @@ impl Enviroment {
 pub struct Screen {
 	pub name: String,
 	/// current wallpaper of the screen
-	wallpaper: Option<Utf8PathBuf>,
+	pub wallpaper: Option<Utf8PathBuf>,
 	/// current mode of the screen
-	mode: Option<Mode>,
-	/// indicates if screen is active,
-	/// if false screen is disconneted or is a default
-	active: bool,
+	pub mode: Option<Mode>,
+	/// indicates if screen is active.
+	/// A inactive screen is current disconneted or repesents a default for new connected screens or is a fallback after restart
+	pub active: bool,
 }
 
 ///Builder for advance Wallpaper settings and informations.
@@ -207,22 +253,8 @@ impl WallpaperBuilder {
 	}
 
 	///Set background to wallpapers, witch will be selected by the given closure.
-	///The index oft screen and the current screen are passed to the closure.
-	/// ``` no_run
-	/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-	/// use more_wallpapers::{Mode, WallpaperBuilder};
-	///
-	/// let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-	/// WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
-	/// 	if i == 0 {
-	/// 		return ("/usr/share/wallpapers/first.jpg".to_owned(), Mode::default());
-	/// 	}
-	/// 	if screen.name == "HDMI1" {
-	/// 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
-	/// 	}
-	/// 	(fallback_images[i % fallback_images.len()].to_owned(), Mode::Tile)
-	/// })?;
-	/// # Ok(())}
+	///The index oft screen and the current screen are passed to the closure.x
+	#[doc = doc_WallpaperBuilder_example!()]
 	pub fn set_wallapers<F, P>(mut self, mut f: F) -> Result<(), WallpaperError>
 	where
 		P: AsRef<Utf8Path>,
@@ -241,21 +273,7 @@ impl WallpaperBuilder {
 		set_screens_from_builder(self)
 	}
 
-	///Set the background of all screens to the wallpapers of `wallpapers`.
-	///The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`.
-	/// Return a vec, with dose inlcude the path of the Wallpapers,
-	/// witch was set as background.
-	/// If the same wallpaper was set multiple times to different screens,
-	/// the return value does also include the wallpaper multiple times.
-	/// ```no_run
-	/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-	/// use more_wallpapers::{Mode, WallpaperBuilder};
-	///
-	/// let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-	/// let used_wallpapers = WallpaperBuilder::new()?.set_wallpapers_from_vec(images, Mode::Crop)?;
-	/// println!("background was set to the following wallpapers {used_wallpapers:?}");
-	/// # Ok(())}
-	/// ```
+	#[doc = doc_set_wallpapers_from_vec!(builder)]
 	pub fn set_wallpapers_from_vec<P>(
 		self,
 		wallpapers: Vec<P>,
@@ -312,21 +330,7 @@ impl WallpaperBuilder {
 	}
 }
 
-///Set the background of all screens to the wallpapers of `wallpapers`.
-///The wallpaper of `screen[i]` will be set to `wallpapers[i mod wallpapers.len()]`.
-/// Return a vec, with dose inlcude the path of the Wallpapers,
-/// witch was set as background.
-/// If the same wallpaper was set multiple times to different screens,
-/// the return value does also include the wallpaper multiple times.
-/// ```no_run
-/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// use more_wallpapers::{set_wallpapers_from_vec, Mode};
-///
-/// let images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-/// let used_wallpapers = set_wallpapers_from_vec(images, Mode::Crop)?;
-/// println!("background was set to the following wallpapers {used_wallpapers:?}");
-/// # Ok(())}
-/// ```
+#[doc = doc_set_wallpapers_from_vec!(fn)]
 pub fn set_wallpapers_from_vec<P>(
 	wallpapers: Vec<P>,
 	default_wallpaper: P,

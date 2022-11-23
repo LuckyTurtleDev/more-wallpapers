@@ -33,22 +33,23 @@ If you would like to set only a different wallpaper for each screen and don’t 
 use more_wallpapers::Mode;
 
 let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
-more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop)?;
+more_wallpapers::set_wallpapers_from_vec(images, "default.jpg", Mode::Crop)?;
 ```
 
-For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link12]:
+The `default_wallpaper` param is used as wallpaper for [inactive screens][__link12]. If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
+
+For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link13]:
 
 
 ```rust
 use more_wallpapers::{Mode, WallpaperBuilder};
 
 let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
-	if i == 0 {
-		return (
-			"first.jpg".to_owned(),
-			Mode::default(),
-		);
+let mut i = 0;
+WallpaperBuilder::new()?.set_wallapers(|screen| {
+	i+= 1;
+	if i == 1 {
+		return ("first.jpg".to_owned(), Mode::default());
 	}
 	if screen.name == "HDMI1" {
 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
@@ -61,12 +62,13 @@ WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG-q_ifkYbykDG6jYqfB7tTwIG6Iqwk50WXPpG4-hgAqV1y5YYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG90PL9X5JX5OG3UnH-XF6s_oGwB-CWSlQtyyG63AxQZ_KLHPYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec
- [__link11]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_random_wallpapers_from_vec
- [__link12]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/struct.WallpaperBuilder.html
+ [__link11]: `set_random_wallpapers_from_vec()`
+ [__link12]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=Screen::active
+ [__link13]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/struct.WallpaperBuilder.html
  [__link2]: https://crates.io/crates/wallpaper
  [__link3]: https://crates.io/crates/wallpaper
  [__link4]: https://github.com/stoeckmann/xwallpaper
