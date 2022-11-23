@@ -119,7 +119,6 @@ println!("background was set to the following wallpapers {used_wallpapers:?}");
 	}
 
 use camino::{Utf8Path, Utf8PathBuf};
-use once_cell::sync::Lazy;
 use std::io;
 use strum_macros::{Display, EnumString};
 
@@ -230,13 +229,7 @@ impl WallpaperBuilder {
 
 	///Return the count of active screens. This does not include disable screens.
 	pub fn active_screen_count(&self) -> usize {
-		let mut i = 0;
-		for screen in self.screens.iter() {
-			if screen.active {
-				i += 1
-			}
-		}
-		i
+		self.screens.iter().filter(|screen| screen.active).count()
 	}
 
 	///Return the current Destkop enviroment.
