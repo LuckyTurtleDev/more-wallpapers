@@ -28,7 +28,7 @@ pub enum CommandError {
 #[non_exhaustive]
 pub enum WallpaperError {
 	#[cfg(target_os = "linux")]
-	#[error("unsupported Destkop Environment {0:?}")]
+	#[error("unsupported Desktop Environment {0:?}")]
 	Unsuported(String),
 
 	#[cfg(target_os = "linux")]
