@@ -71,7 +71,7 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 	}
 	let builder = WallpaperBuilder::new().to_ah()?;
 	builder
-		.set_wallapers(|_, screen| -> (String, Mode) {
+		.set_wallpapers(|_, screen| -> (String, Mode) {
 			let index = opt
 				.screens
 				.iter()
