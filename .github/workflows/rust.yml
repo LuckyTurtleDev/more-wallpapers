@@ -46,7 +46,8 @@ jobs:
       
   doc2readme:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/msrd0/cargo-doc2readme:nightly
     steps:
     - uses: actions/checkout@v3
-    - uses: docker://ghcr.io/msrd0/cargo-doc2readme:nightly
     - run: cargo doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
