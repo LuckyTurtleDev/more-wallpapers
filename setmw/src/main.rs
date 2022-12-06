@@ -1,4 +1,3 @@
-
 use clap::Parser;
 use more_wallpapers::{Mode, WallpaperBuilder};
 
