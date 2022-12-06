@@ -166,7 +166,7 @@ pub enum Mode {
 	Tile,
 }
 
-/// Represent the used operating system or dekstop.
+/// Represent the used operating system or desktop.
 /// Inform about supported features, at the curren environment.
 #[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
@@ -232,7 +232,7 @@ impl WallpaperBuilder {
 		self.screens.iter().filter(|screen| screen.active).count()
 	}
 
-	///Return the current Destkop environment.
+	///Return the current desktop environment.
 	pub fn environment(&self) -> Environment {
 		self.environment
 	}
