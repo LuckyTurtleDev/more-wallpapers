@@ -226,6 +226,7 @@ name = "more-wallpapers"
 version = "0.1.1"
 dependencies = [
  "camino",
+ "more-wallpapers-fallback",
  "rand",
  "rustbus",
  "rustc_version",
@@ -234,8 +235,20 @@ dependencies = [
  "strum",
  "strum_macros",
  "thiserror",
- "wallpaper",
  "xrandr",
+]
+
+[[package]]
+name = "more-wallpapers-fallback"
+version = "4.0.0"
+source = "git+https://github.com/LuckyTurtleDev/wallpaper.rs.git#eda8c9d2f2c24156928eae0f96e1a659edbfeae8"
+dependencies = [
+ "dirs",
+ "enquote",
+ "rust-ini",
+ "thiserror",
+ "winapi",
+ "winreg",
 ]
 
 [[package]]
@@ -552,19 +565,6 @@ name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
-
-[[package]]
-name = "wallpaper"
-version = "3.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0547c84bf49b1096b20ce49736b86cd27f8225fc426665d3fba19e71e44c4d46"
-dependencies = [
- "dirs",
- "enquote",
- "rust-ini",
- "winapi",
- "winreg",
-]
 
 [[package]]
 name = "wasi"
