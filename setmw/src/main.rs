@@ -1,25 +1,5 @@
-use anyhow::bail;
 use clap::Parser;
 use more_wallpapers::{Mode, WallpaperBuilder};
-
-trait BoxedErrorHandling<V, E>
-where
-	E: std::fmt::Display,
-{
-	fn to_ah(self) -> anyhow::Result<V>;
-}
-
-impl<V, E> BoxedErrorHandling<V, E> for Result<V, E>
-where
-	E: std::fmt::Display,
-{
-	fn to_ah(self) -> anyhow::Result<V> {
-		match self {
-			Ok(value) => Ok(value),
-			Err(error) => bail!("{error}"),
-		}
-	}
-}
 
 #[derive(Debug, Parser)]
 pub struct SetVecOpt {
@@ -49,7 +29,7 @@ enum Opt {
 	*/
 }
 fn list() -> anyhow::Result<()> {
-	let builder = WallpaperBuilder::new().to_ah()?;
+	let builder = WallpaperBuilder::new()?;
 	println!("enviroment: {}", builder.enviroment());
 	println!(
 		"support various wallpaper: {}",
@@ -85,7 +65,7 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 */
 
 fn set_vec(opt: SetVecOpt) -> anyhow::Result<()> {
-	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, Mode::Crop).to_ah()?;
+	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, Mode::Crop)?;
 	println!("The backgrounds have been set to the following wallpapers {used_wallpapers:?}");
 	Ok(())
 }
