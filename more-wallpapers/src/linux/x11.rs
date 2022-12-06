@@ -8,6 +8,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, xrandr::XrandrError> {
 		if monitor.is_automatic {
 			screens.push(Screen {
 				name: monitor.name,
+				active: true,
 				wallpaper: None,
 				mode: None,
 			})

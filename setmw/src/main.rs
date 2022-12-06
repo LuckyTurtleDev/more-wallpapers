@@ -1,3 +1,4 @@
+
 use clap::Parser;
 use more_wallpapers::{Mode, WallpaperBuilder};
 
@@ -30,10 +31,10 @@ enum Opt {
 }
 fn list() -> anyhow::Result<()> {
 	let builder = WallpaperBuilder::new()?;
-	println!("enviroment: {}", builder.enviroment());
+	println!("environment: {}", builder.environment());
 	println!(
 		"support various wallpaper: {}",
-		builder.enviroment().support_various_wallpaper()
+		builder.environment().support_various_wallpaper()
 	);
 	print!("activescreens:");
 	for screen in builder.screens() {
@@ -51,7 +52,7 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 	}
 	let builder = WallpaperBuilder::new().to_ah()?;
 	builder
-		.set_wallapers(|_, screen| -> (String, Mode) {
+		.set_wallpapers(|_, screen| -> (String, Mode) {
 			let index = opt
 				.screens
 				.iter()
@@ -65,7 +66,8 @@ fn set(opt: SetOpt) -> anyhow::Result<()> {
 */
 
 fn set_vec(opt: SetVecOpt) -> anyhow::Result<()> {
-	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, Mode::Crop)?;
+	let default = opt.images.first().unwrap().to_owned();
+	let used_wallpapers = more_wallpapers::set_wallpapers_from_vec(opt.images, default, Mode::Crop)?;
 	println!("The backgrounds have been set to the following wallpapers {used_wallpapers:?}");
 	Ok(())
 }

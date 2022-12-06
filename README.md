@@ -2,11 +2,11 @@
 
 Yet another wallpaper crate, which can set a wallpapers per screen.
 
-The main feature over other crates like [wallpaper][__link0] or [wall][__link1] is the ability to set **different wallpapers** on different screens. Currently this feature is only implemented for some enviroments. Because of this you can enable the `fallback` feature, to use a [custom version][__link2] of the [wallpaper][__link3] crate as a fallback on unsupported environments. This means you can use the additonal features of this crate and still support a large amount of supported enviroments.
+The main feature over other crates like [wallpaper][__link0] or [wall][__link1] is the ability to set **different wallpapers** on different screens. Currently this feature is only implemented for some environments. Because of this you can enable the `fallback` feature, to use a [custom version][__link2] of the [wallpaper][__link3] crate as a fallback on unsupported environments. This means you can use the additonal features of this crate and still support a large amount of environments.
 
-Currently the following enviroments are supported:
+Currently the following environments are supported:
 
-| enviroment | set wallpaper | set wallpaper per screen | requirements |
+| environment | set wallpaper | set wallpaper per screen | requirements |
 | --- |:---:|:---:| --- |
 | Windows | ✅ | ❌ | `features=["fallback"]`¹ |
 | MacOS | ✅ | ❌ | `features=["fallback"]`¹ |
@@ -21,7 +21,7 @@ Currently the following enviroments are supported:
 
 ¹ Please check also the requirements of the [wallpaper][__link7] crate.<br/> ² normally already installed.
 
-The information about the currently supported features are also provided by the [`Enviroment`][__link8] enum.
+The information about the currently supported features are also provided by the [`Environment`][__link8] enum.
 
 
 ### QuickStart / Examples:
@@ -33,22 +33,23 @@ If you would like to set only a different wallpaper for each screen and don’t 
 use more_wallpapers::Mode;
 
 let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
-more_wallpapers::set_wallpapers_from_vec(images, Mode::Crop)?;
+more_wallpapers::set_wallpapers_from_vec(images, "default.jpg", Mode::Crop)?;
 ```
 
-For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link11]:
+The `"default.jpg"` is used as wallpaper for [inactive screens][__link11]. If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
+
+For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link12]:
 
 
 ```rust
 use more_wallpapers::{Mode, WallpaperBuilder};
 
 let fallback_images = vec!["/usr/share/wallpapers/1.jpg", "/usr/share/wallpapers/2.jpg"];
-WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
-	if i == 0 {
-		return (
-			"first.jpg".to_owned(),
-			Mode::default(),
-		);
+let mut i = 0;
+WallpaperBuilder::new()?.set_wallpapers(|screen| {
+	i += 1;
+	if i == 1 {
+		return ("first.jpg".to_owned(), Mode::default());
 	}
 	if screen.name == "HDMI1" {
 		return ("/usr/share/wallpapers/hdmi.jpg".to_owned(), Mode::Fit);
@@ -61,16 +62,17 @@ WallpaperBuilder::new()?.set_wallapers(|i, screen| -> (String, Mode) {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG-UBX2EfDsv3Gx0UJtRqldZ3G4mO8Uz4FC3YGx7fMGW9PxDxYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG1OhAb7kdRHVGyH8iXODgAp2GxY7uQel91tnG0Em58p7yHDGYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4xLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_random_wallpapers_from_vec
- [__link11]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/struct.WallpaperBuilder.html
+ [__link11]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=Screen::active
+ [__link12]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/struct.WallpaperBuilder.html
  [__link2]: https://github.com/LuckyTurtleDev/wallpaper.rs
  [__link3]: https://crates.io/crates/wallpaper
  [__link4]: https://github.com/stoeckmann/xwallpaper
  [__link5]: https://gitlab.freedesktop.org/xorg/app/xrandr
  [__link6]: https://github.com/swaywm/swaybg
  [__link7]: https://crates.io/crates/wallpaper
- [__link8]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/enum.Enviroment.html
+ [__link8]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/enum.Environment.html
  [__link9]: https://docs.rs/more-wallpapers/0.1.1/more_wallpapers/?search=set_wallpapers_from_vec

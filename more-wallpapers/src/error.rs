@@ -28,11 +28,11 @@ pub enum CommandError {
 #[non_exhaustive]
 pub enum WallpaperError {
 	#[cfg(target_os = "linux")]
-	#[error("unsupported Destkop Enviroment {0:?}")]
+	#[error("unsupported Desktop Environment {0:?}")]
 	Unsuported(String),
 
 	#[cfg(target_os = "linux")]
-	#[error("can not read Enviroment Variable {0:?}: {1}")]
+	#[error("can not read Environment Variable {0:?}: {1}")]
 	EnvVar(&'static str, env::VarError),
 
 	#[cfg(target_os = "linux")]

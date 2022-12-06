@@ -1,13 +1,14 @@
-use crate::{Enviroment, Screen, WallpaperBuilder, WallpaperError};
+use crate::{Environment, Screen, WallpaperBuilder, WallpaperError};
 
 pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 	let screens = vec![Screen {
 		name: "Unknow".into(),
 		wallpaper: None,
 		mode: None,
+		active: true,
 	}];
 	Ok(WallpaperBuilder {
-		enviroment: Enviroment::MacOS,
+		environment: Environment::MacOS,
 		screens,
 	})
 }

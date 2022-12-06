@@ -32,13 +32,12 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 	let desktops: Vec<KdeDesktop> = serde_json::from_str(&plasmashell("print(JSON.stringify(desktops()));")?)?;
 	let mut screens = std::vec::Vec::new();
 	for desktop in desktops {
-		if desktop.screen >= 0 {
-			screens.push(Screen {
-				name: desktop.id.to_string(),
-				wallpaper: None,
-				mode: None,
-			});
-		}
+		screens.push(Screen {
+			name: desktop.id.to_string(),
+			active: desktop.screen >= 0,
+			wallpaper: None,
+			mode: None,
+		});
 	}
 	Ok(screens)
 }
