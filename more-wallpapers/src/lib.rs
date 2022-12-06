@@ -6,27 +6,27 @@
 //!
 //! The main feature over other crates like [wallpaper] or [wall] is the ability to set **different wallpapers** on different screens.
 //! Currently this feature is only implemented for some enviroments.
-//! Because of this you can enable the "wallpaper" feature,
-//! which uses the [wallpaper] crate as a fallback on unsupported environments.
+//! Because of this you can enable the `fallback` feature,
+//! to use a [custom version](https://github.com/LuckyTurtleDev/wallpaper.rs) of the [wallpaper] crate as a fallback on unsupported environments.
 //! This means you can use the additonal features of this crate and
-//! still support the large amount of supported enviroments of the [wallpaper] crate.
+//! still support a large amount of supported enviroments.
 //!
 //! Currently the following enviroments are supported:
 //!
 //! | enviroment | set wallpaper | set wallpaper per screen | requirements |
 //! --- | :---: | :---:| --- |
-//! |Windows                     | ✅ | ❌ | `features=["wallpaper"]`¹ |
-//! |MacOS                       | ✅ | ❌ | `features=["wallpaper"]`¹ |
+//! |Windows                     | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |MacOS                       | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |X11                         | ✅ | ✅ | [xwallpaper], [libxrandr]²|
-//! |Budgie(wayland)             | ✅ | ❌ | `features=["wallpaper"]`¹ |
-//! |Deepin(wayland)             | ✅ | ❌ | `features=["wallpaper"]`¹ |
-//! |GNOME(wayland)              | ✅ | ❌ | `features=["wallpaper"]`¹ |
-//! |KDE                         | ✅ | ✅ | [dbus]²|
-//! |Mate(wayland)               | ✅ | ❌ | `features=["wallpaper"]`¹ |
-//! |Sway                        | ✅ | ❌ | `features=["wallpaper"]`¹ |
-//! |some other wayland desktops | ✅ | ❌ | `features=["wallpaper"]`¹, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
+//! |Budgie(wayland)             | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |Deepin(wayland)             | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |GNOME(wayland)              | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |KDE                         | ✅ | ✅ | |
+//! |Mate(wayland)               | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |Sway                        | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |some other wayland desktops | ✅ | ❌ | `features=["fallback"]`¹, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 //!
-//! ¹ Please check also the requirements of the [wallpaper] crate.</br>
+//! ¹ Please check also the requirements of the [wallpaper] crate.<br/>
 //! ² normally already installed.
 //!
 //! The information about the currently supported features are also provided by the [`Enviroment`] enum.
@@ -34,7 +34,7 @@
 //! ## QuickStart / Examples:
 //! If you would like to set only a different wallpaper for each screen and don't care
 //! which wallpaper is used on which screen,
-//! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`]:
+//! you can use [`set_wallpapers_from_vec()`] or [`set_random_wallpapers_from_vec()`] (only aviable with the `rand` feature):
 //! ```no_run
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use more_wallpapers::Mode;
