@@ -51,9 +51,9 @@ pub enum WallpaperError {
 	#[error("{0}")]
 	Command(#[from] CommandError),
 
-	#[cfg(feature = "wallpaper")]
+	#[cfg(feature = "fallback")]
 	#[error("{0}")]
-	WallpaperCrate(#[from] Box<dyn std::error::Error>),
+	WallpaperCrate(#[from] fallback::Error),
 
 	#[error("{0:?} {1}")]
 	IOError(String, io::Error),

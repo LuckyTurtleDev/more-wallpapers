@@ -9,6 +9,6 @@ pub(crate) fn get_screens() -> Vec<Screen> {
 	}]
 }
 
-pub(crate) fn set_screens(screen: Vec<Screen>) -> Result<(), Box<dyn std::error::Error>> {
-	wallpaper::set_from_path(screen[0].wallpaper.as_ref().unwrap().as_str())
+pub(crate) fn set_screens(screen: Vec<Screen>) -> Result<(), fallback::Error> {
+	fallback::set_from_path(screen[0].wallpaper.as_ref().unwrap().as_str())
 }

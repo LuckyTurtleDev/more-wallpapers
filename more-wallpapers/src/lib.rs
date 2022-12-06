@@ -135,14 +135,14 @@ mod linux;
 #[cfg(target_os = "linux")]
 use crate::linux::*;
 
-#[cfg(all(target_os = "windows", not(feature = "wallpaper")))]
+#[cfg(all(target_os = "windows", not(feature = "fallback")))]
 std::compile_error!("Windows does need the \"wallpaper\" feature");
 #[cfg(target_os = "windows")]
 mod windows;
 #[cfg(target_os = "windows")]
 use crate::windows::*;
 
-#[cfg(all(target_os = "macos", not(feature = "wallpaper")))]
+#[cfg(all(target_os = "macos", not(feature = "fallback")))]
 std::compile_error!("MacOS does need the \"wallpaper\" feature");
 #[cfg(target_os = "macos")]
 mod macos;
@@ -172,11 +172,11 @@ pub enum Mode {
 #[strum(serialize_all = "lowercase")]
 pub enum Environment {
 	Kde,
-	#[cfg(feature = "wallpaper")]
+	#[cfg(feature = "fallback")]
 	LinuxWallpaperCrate,
-	#[cfg(feature = "wallpaper")]
+	#[cfg(feature = "fallback")]
 	MacOS,
-	#[cfg(feature = "wallpaper")]
+	#[cfg(feature = "fallback")]
 	Windows,
 	X11,
 }
@@ -185,11 +185,11 @@ impl Environment {
 	pub fn support_various_wallpaper(&self) -> bool {
 		match self {
 			Self::Kde => true,
-			#[cfg(feature = "wallpaper")]
+			#[cfg(feature = "fallback")]
 			Self::LinuxWallpaperCrate => false,
-			#[cfg(feature = "wallpaper")]
+			#[cfg(feature = "fallback")]
 			Self::MacOS => false,
-			#[cfg(feature = "wallpaper")]
+			#[cfg(feature = "fallback")]
 			Self::Windows => false,
 			Self::X11 => true,
 		}
