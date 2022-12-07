@@ -7,6 +7,14 @@ mod x11;
 mod wallpaper_crate;
 
 fn get_environment() -> Result<Environment, WallpaperError> {
+	#[cfg(feature = "fallback")]
+	{
+	//if the SWAYSOCK env exist sawy is the active desktop
+	let sway_sock = load_env_var("SWAYSOCK");
+	if sway_sock.is_ok() {
+		return Ok(Environment::LinuxWallpaperCrate);
+	}
+	}
 	let desktop = load_env_var("XDG_CURRENT_DESKTOP")?.to_lowercase();
 	if desktop.as_str() == "kde" {
 		return Ok(Environment::Kde);
@@ -15,7 +23,15 @@ fn get_environment() -> Result<Environment, WallpaperError> {
 	match sessinon_type.as_str() {
 		"x11" => Ok(Environment::X11),
 		#[cfg(feature = "fallback")]
-		"wayland" => Ok(Environment::LinuxWallpaperCrate),
+		"wayland" => match desktop.as_str() {
+			"budgie:gnome" => Ok(Environment::LinuxWallpaperCrate), //same enviroment like gnome
+			"deepin" => Ok(Environment::LinuxWallpaperCrate),
+			"gnome" => Ok(Environment::LinuxWallpaperCrate),
+			"lxde" => Ok(Environment::LinuxWallpaperCrate),
+			"matex" => Ok(Environment::LinuxWallpaperCrate),
+			"xfce" => Ok(Environment::LinuxWallpaperCrate),
+			_ => Err(WallpaperError::Unsuported(format!("{desktop} ({sessinon_type})"))),
+		},
 		_ => Err(WallpaperError::Unsuported(format!("{desktop} ({sessinon_type})"))),
 	}
 }

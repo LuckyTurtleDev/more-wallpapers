@@ -24,7 +24,6 @@
 //! |KDE                         | ✅ | ✅ | |
 //! |Mate(wayland)               | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |Sway                        | ✅ | ❌ | `features=["fallback"]`¹ |
-//! |some other wayland desktops | ✅ | ❌ | `features=["fallback"]`¹, [swaybg], dektop must support wlr-layer-shell protocol and wl_output version 4 |
 //!
 //! ¹ Please check also the requirements of the [wallpaper] crate.<br/>
 //! ² normally already installed.
