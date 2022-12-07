@@ -166,6 +166,19 @@ pub enum Mode {
 	Tile,
 }
 
+#[cfg(feature = "fallback")]
+impl From<Mode> for fallback::Mode {
+	fn from(mode: Mode) -> Self {
+		match mode {
+			Mode::Center => fallback::Mode::Center,
+			Mode::Crop => fallback::Mode::Crop,
+			Mode::Fit => fallback::Mode::Fit,
+			Mode::Stretch => fallback::Mode::Stretch,
+			Mode::Tile => fallback::Mode::Tile,
+		}
+	}
+}
+
 /// Represent the used operating system or desktop.
 /// Inform about supported features, at the curren environment.
 #[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]

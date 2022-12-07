@@ -14,6 +14,8 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 }
 
 pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), WallpaperError> {
-	fallback::set_from_path(builder.screens[0].wallpaper.as_ref().unwrap().as_ref())?;
+	let screen = builder.screens.first().unwrap();
+	fallback::set_from_path(screen.wallpaper.as_ref().unwrap().as_str())?;
+	fallback::set_mode(screen.mode.unwrap().into())?;
 	Ok(())
 }

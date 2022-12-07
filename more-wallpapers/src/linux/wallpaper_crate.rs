@@ -10,5 +10,7 @@ pub(crate) fn get_screens() -> Vec<Screen> {
 }
 
 pub(crate) fn set_screens(screen: Vec<Screen>) -> Result<(), fallback::Error> {
-	fallback::set_from_path(screen[0].wallpaper.as_ref().unwrap().as_str())
+	let screen = screen.first().unwrap();
+	fallback::set_from_path(screen.wallpaper.as_ref().unwrap().as_str())?;
+	fallback::set_mode(screen.mode.unwrap().into())
 }
