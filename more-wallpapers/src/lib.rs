@@ -185,7 +185,7 @@ impl From<Mode> for fallback::Mode {
 pub enum Environment {
 	Kde,
 	#[cfg(feature = "fallback")]
-	LinuxWallpaperCrate,
+	LinuxFallback,
 	#[cfg(feature = "fallback")]
 	MacOS,
 	#[cfg(feature = "fallback")]
@@ -198,7 +198,7 @@ impl Environment {
 		match self {
 			Self::Kde => true,
 			#[cfg(feature = "fallback")]
-			Self::LinuxWallpaperCrate => false,
+			Self::LinuxFallback => false,
 			#[cfg(feature = "fallback")]
 			Self::MacOS => false,
 			#[cfg(feature = "fallback")]
