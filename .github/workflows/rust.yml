@@ -9,17 +9,20 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, windows, macos]
-        features: [ "", --all-features, --features rand, --features fallback]
+        features: ["", --all-features, --features rand, --features fallback]
+        rust_version: [latest, 1.62]
     name: "${{ matrix.os }}  ${{ matrix.features }}"
     continue-on-error: true
     runs-on: ${{ matrix.os }}-latest
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ matrix.rust_version }}
       - name: Install xrandr
         if:  ${{ matrix.os == 'ubuntu' }}
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
-      - run: cargo test --workspace --all-features
+      - run: cargo test --workspace ${{ matrix.features }}
         env:
           RUST_BACKTRACE: 1
 
