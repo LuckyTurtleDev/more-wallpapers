@@ -31,10 +31,15 @@ jobs:
         rust_version: [stable, 1.62]
         workspace: [-p more-wallpapers]
         include:
-          - workspace: --workspace
+          - workspace: -p setmw
             rust_version: stable
-            features: ""
             os: ubuntu
+          - workspace: -p setmw
+            rust_version: stable
+            os: windows
+          - workspace: -p setmw
+            rust_version: stable
+            os: macos
         exclude:
         - os: windows
           features: --features rand
