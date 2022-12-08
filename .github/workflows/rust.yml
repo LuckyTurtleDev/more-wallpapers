@@ -47,13 +47,13 @@ jobs:
             rust_version: stable
             os: macos
         exclude:
-        - os.id: windows
+        - os: windows
           features: --features rand
-        - os.id: windows
+        - os: windows
           features: ""
-        - os.id: macos
+        - os: macos
           features: --features rand
-        - os.id: macos
+        - os: macos
           features: ""
     name: "${{ matrix.os.name }} ${{ matrix.rust_version }} ${{ matrix.features }} ${{ matrix.workspace }}"
     continue-on-error: true
