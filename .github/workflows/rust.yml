@@ -26,7 +26,13 @@ jobs:
   check:
     strategy:
       matrix:
-        os: [ubuntu, windows, macos]
+        os:
+          - name: "linux"
+            id: ubuntu
+          - name: "win  "
+            id: windows
+          - name: "mac  "
+            id: macos
         features: ["", --all-features, --features rand, --features fallback]
         rust_version: [stable, 1.62]
         workspace: [-p more-wallpapers]
@@ -49,9 +55,9 @@ jobs:
           features: --features rand
         - os: macos
           features: ""
-    name: "${{ matrix.os }} ${{ matrix.rust_version }} ${{ matrix.features }} ${{ matrix.workspace }}"
+    name: "${{ matrix.os.name }} ${{ matrix.rust_version }} ${{ matrix.features }} ${{ matrix.workspace }}"
     continue-on-error: true
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os.id }}-latest
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
@@ -67,7 +73,7 @@ jobs:
           key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}} ${{matrix.features}} ${{ matrix.workspace }}"
           restore-keys: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}}"
       - name: Install xrandr
-        if:  ${{ matrix.os == 'ubuntu' }}
+        if:  ${{ matrix.os.id == 'ubuntu' }}
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
       - run: cargo test ${{ matrix.workspace }} ${{ matrix.features }}
         env:
