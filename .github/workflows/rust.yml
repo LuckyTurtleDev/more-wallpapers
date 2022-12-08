@@ -10,9 +10,9 @@ jobs:
       matrix:
         os: [ubuntu, windows, macos]
         features: [ "", --all-features]
-    name: "check ${{ matrix.os }}"
+    name: "${{ matrix.os }}  ${{ matrix.features }}"
     continue-on-error: true
-    runs-on: ${{ matrix.os }}-latest ${{ matrix.features }}
+    runs-on: ${{ matrix.os }}-latest
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
