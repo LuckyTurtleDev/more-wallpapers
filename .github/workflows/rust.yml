@@ -9,8 +9,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, windows, macos]
-    name: "check ${{ matrix.os }}" 
-    runs-on: ${{ matrix.os }}-latest
+        features: [ "", --all-features]
+    name: "check ${{ matrix.os }}"
+    continue-on-error: true
+    runs-on: ${{ matrix.os }}-latest ${{ matrix.features }}
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
