@@ -16,7 +16,8 @@ jobs:
           - workspace: --workspace
             rust_version: stable
             features: ""
-    name: "${{ matrix.os }} ${{ matrix.rust_version }} ${{ matrix.workspace }} ${{ matrix.features }}"
+            os: ubuntu
+    name: "${{ matrix.os }} ${{ matrix.rust_version }} ${{ matrix.features }} ${{ matrix.workspace }}"
     continue-on-error: true
     runs-on: ${{ matrix.os }}-latest
     steps:
