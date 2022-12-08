@@ -24,12 +24,7 @@ fn get_environment() -> Result<Environment, WallpaperError> {
 		"x11" => Ok(Environment::X11),
 		#[cfg(feature = "fallback")]
 		"wayland" => match desktop.as_str() {
-			"budgie:gnome" => Ok(Environment::LinuxFallback), //same enviroment like gnome
-			"deepin" => Ok(Environment::LinuxFallback),
-			"gnome" => Ok(Environment::LinuxFallback),
-			"lxde" => Ok(Environment::LinuxFallback),
-			"matex" => Ok(Environment::LinuxFallback),
-			"xfce" => Ok(Environment::LinuxFallback),
+			"budgie:gnome" | "deepin" | "gnome" | "lxde" | "mate" | "xfce" => Ok(Environment::LinuxFallback),
 			_ => Err(WallpaperError::Unsuported(format!("{desktop} ({sessinon_type})"))),
 		},
 		_ => Err(WallpaperError::Unsuported(format!("{desktop} ({sessinon_type})"))),

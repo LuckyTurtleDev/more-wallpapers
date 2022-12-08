@@ -61,16 +61,16 @@ WallpaperBuilder::new()?.set_wallpapers(|screen| {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG6HCJXnbryuSG3ykvSgqH61mG9YHNoShLGtqG2pUs8cIiq2sYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4yLjBvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG6HCJXnbryuSG3ykvSgqH61mG9YHNoShLGtqG2pUs8cIiq2sYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4yLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
- [__link10]: https://docs.rs/more-wallpapers/0.2.0/more_wallpapers/?search=Screen::active
- [__link11]: https://docs.rs/more-wallpapers/0.2.0/more_wallpapers/struct.WallpaperBuilder.html
+ [__link10]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=Screen::active
+ [__link11]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/struct.WallpaperBuilder.html
  [__link2]: https://github.com/LuckyTurtleDev/wallpaper.rs
  [__link3]: https://crates.io/crates/wallpaper
  [__link4]: https://github.com/stoeckmann/xwallpaper
  [__link5]: https://gitlab.freedesktop.org/xorg/app/xrandr
  [__link6]: https://crates.io/crates/wallpaper
- [__link7]: https://docs.rs/more-wallpapers/0.2.0/more_wallpapers/enum.Environment.html
- [__link8]: https://docs.rs/more-wallpapers/0.2.0/more_wallpapers/?search=set_wallpapers_from_vec
- [__link9]: https://docs.rs/more-wallpapers/0.2.0/more_wallpapers/?search=set_random_wallpapers_from_vec
+ [__link7]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/enum.Environment.html
+ [__link8]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=set_wallpapers_from_vec
+ [__link9]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=set_random_wallpapers_from_vec
