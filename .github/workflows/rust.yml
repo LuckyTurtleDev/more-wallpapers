@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, windows, macos]
-        features: [ "", --all-features]
+        features: [ "", --all-features, --features rand, --features fallback]
     name: "${{ matrix.os }}  ${{ matrix.features }}"
     continue-on-error: true
     runs-on: ${{ matrix.os }}-latest
