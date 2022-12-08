@@ -64,7 +64,8 @@ jobs:
             ~/.cargo/git
             ~/.cargo/registry
             target
-          key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}}"
+          key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}} ${{matrix.features}} ${{ matrix.workspace }}"
+          restore-keys: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}}"
       - name: Install xrandr
         if:  ${{ matrix.os == 'ubuntu' }}
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
