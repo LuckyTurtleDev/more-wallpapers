@@ -10,8 +10,8 @@ jobs:
       matrix:
         os: [ubuntu, windows, macos]
         features: ["", --all-features, --features rand, --features fallback]
-        rust_version: [latest, 1.62]
-    name: "${{ matrix.os }}  ${{ matrix.features }}"
+        rust_version: [stable, 1.62]
+    name: "${{ matrix.os }} rustc${{ matrix.rust_version }} ${{ matrix.features }}"
     continue-on-error: true
     runs-on: ${{ matrix.os }}-latest
     steps:
