@@ -5,36 +5,6 @@ on:
   pull_request:
 
 jobs:
-  linux:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
-      - name: Install xrandr
-        run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
-      - run: cargo test --workspace --all-features
-      - run: cargo test --workspace
-        env:
-          RUST_BACKTRACE: 1
-
-  windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --workspace --all-features
-        env:
-          RUST_BACKTRACE: 1
-
-  macos:
-    runs-on:  macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --workspace --all-features
-        env:
-          RUST_BACKTRACE: 1
-
   rustfmt:
     runs-on: ubuntu-latest
     steps:
@@ -52,3 +22,53 @@ jobs:
     - uses: actions/checkout@v3
     - run: apk add --no-cache libxrandr-dev
     - run: cargo doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
+    
+  check:
+    strategy:
+      matrix:
+        os: [ubuntu, windows, macos]
+        features: ["", --all-features, --features rand, --features fallback]
+        rust_version: [stable, 1.62]
+        workspace: [-p more-wallpapers]
+        include:
+          - workspace: -p setmw
+            rust_version: stable
+            os: ubuntu
+          - workspace: -p setmw
+            rust_version: stable
+            os: windows
+          - workspace: -p setmw
+            rust_version: stable
+            os: macos
+        exclude:
+        - os: windows
+          features: --features rand
+        - os: windows
+          features: ""
+        - os: macos
+          features: --features rand
+        - os: macos
+          features: ""
+    name: "${{ matrix.os }} ${{ matrix.rust_version }} ${{ matrix.features }} ${{ matrix.workspace }}"
+    continue-on-error: true
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ matrix.rust_version }}
+        id: "rust-toolchain"
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/git
+            ~/.cargo/registry
+            target
+          key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}} ${{matrix.features}} ${{ matrix.workspace }}"
+          restore-keys: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}}"
+      - name: Install xrandr
+        if:  ${{ matrix.os == 'ubuntu' }}
+        run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
+      - run: cargo test ${{ matrix.workspace }} ${{ matrix.features }}
+        env:
+          RUST_BACKTRACE: 1
