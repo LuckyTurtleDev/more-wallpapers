@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu, windows, macos]
         features: ["", --all-features, --features rand, --features fallback]
         rust_version: [stable, 1.62]
-    name: "${{ matrix.os }} rustc${{ matrix.rust_version }} ${{ matrix.features }}"
+    name: "${{ matrix.os }} ${{ matrix.rust_version }} ${{ matrix.features }}"
     continue-on-error: true
     runs-on: ${{ matrix.os }}-latest
     steps:
@@ -22,7 +22,7 @@ jobs:
       - name: Install xrandr
         if:  ${{ matrix.os == 'ubuntu' }}
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
-      - run: cargo test --workspace ${{ matrix.features }}
+      - run: cargo test -p more-wallpapers ${{ matrix.features }}
         env:
           RUST_BACKTRACE: 1
 
