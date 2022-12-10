@@ -3,6 +3,7 @@ name: Rust
 on:
   push:
   pull_request:
+  release:
 
 jobs:
   rustfmt:
@@ -26,7 +27,7 @@ jobs:
     - run: cargo doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
   
   cargo_publish:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'release' }}
     environment: publish
     needs: [rustfmt, doc2readme, check]
     runs-on: ubuntu-latest
