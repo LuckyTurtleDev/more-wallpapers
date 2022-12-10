@@ -22,6 +22,8 @@ jobs:
       image: ghcr.io/msrd0/cargo-doc2readme:nightly
     steps:
     - uses: actions/checkout@v3
+    - name: Install xrandr
+      run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
     - run: apk add --no-cache libxrandr-dev
     - run: cargo doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
   
