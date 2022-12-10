@@ -7,6 +7,7 @@ on:
 jobs:
   rustfmt:
     runs-on: ubuntu-latest
+    environment: test
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@nightly
@@ -16,14 +17,27 @@ jobs:
       
   doc2readme:
     runs-on: ubuntu-latest
+    environment: test
     container:
       image: ghcr.io/msrd0/cargo-doc2readme:nightly
     steps:
     - uses: actions/checkout@v3
     - run: apk add --no-cache libxrandr-dev
     - run: cargo doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
-    
+  
+  cargo_publish:
+    environment: publish
+    needs: [rustfmt, doc2readme, check]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt
+      - run: cargo publish --package more-wallpapers --token ${{ secrets.CRATES_IO_TOKEN }}
+  
   check:
+    environment: test
     strategy:
       matrix:
         os: [ubuntu, windows, macos]
