@@ -26,7 +26,7 @@ jobs:
     - run: cargo doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
   
   cargo_publish:
-    if: ${{ github.event_name == "push" }}
+    if: ${{ github.event_name == 'push' }}
     environment: publish
     needs: [rustfmt, doc2readme, check]
     runs-on: ubuntu-latest
