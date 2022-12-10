@@ -8,7 +8,6 @@ on:
 jobs:
   rustfmt:
     runs-on: ubuntu-latest
-    environment: test
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@nightly
@@ -18,7 +17,6 @@ jobs:
       
   doc2readme:
     runs-on: ubuntu-latest
-    environment: test
     container:
       image: ghcr.io/msrd0/cargo-doc2readme:nightly
     steps:
@@ -28,7 +26,6 @@ jobs:
   
   cargo_publish:
     if: ${{ github.event_name == 'release' }}
-    environment: publish
     needs: [rustfmt, doc2readme, check]
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +38,6 @@ jobs:
       - run: cargo publish --package more-wallpapers --token ${{ secrets.CRATES_IO_TOKEN }}
   
   check:
-    environment: test
     strategy:
       matrix:
         os: [ubuntu, windows, macos]
