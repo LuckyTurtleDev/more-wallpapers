@@ -1,4 +1,3 @@
-//dconf write "/org/cinnamon/desktop/background/picture-uri" '"file:///home/lukas/foo.jpg"'; xwallpaper --output DVI-0 --center /home/lukas/baar.png
 use crate::{
 	error::{CommandError, WallpaperError},
 	linux::{run, x11},
