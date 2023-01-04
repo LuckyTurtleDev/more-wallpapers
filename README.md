@@ -10,22 +10,23 @@ Currently the following environments are supported:
 | --- |:---:|:---:| --- |
 | Windows | ✅ | ❌ | `features=["fallback"]`¹ |
 | MacOS | ✅ | ❌ | `features=["fallback"]`¹ |
-| X11 | ✅ | ✅ | [xwallpaper][__link4], [libxrandr][__link5]² |
+| X11³ | ✅ | ✅ | [xwallpaper][__link4], [libxrandr][__link5]² |
 | Budgie(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
+| Cinnamon⁴ | ✅ | ✅ | [xwallpaper][__link6], [libxrandr][__link7]² |
 | Deepin(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
 | GNOME(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
 | KDE | ✅ | ✅ |  |
 | Mate(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
 | Sway | ✅ | ❌ | `features=["fallback"]`¹ |
 
-¹ Please check also the requirements of the [wallpaper][__link6] crate.<br/> ² normally already installed.
+¹ Please check also the requirements of the [wallpaper][__link8] crate.<br/> ² Normally already installed.<br/> ³ Wallpapers will be reset after restart. <br/> ⁴ Wallpapers will be reset to provided default after restart.
 
-The information about the currently supported features are also provided by the [`Environment`][__link7] enum.
+The information about the currently supported features are also provided by the [`Environment`][__link9] enum.
 
 
 ### QuickStart / Examples:
 
-If you would like to set only a different wallpaper for each screen and don’t care which wallpaper is used on which screen, you can use [`set_wallpapers_from_vec()`][__link8] or [`set_random_wallpapers_from_vec()`][__link9] (only aviable with the `rand` feature):
+If you would like to set only a different wallpaper for each screen and don’t care which wallpaper is used on which screen, you can use [`set_wallpapers_from_vec()`][__link10] or [`set_random_wallpapers_from_vec()`][__link11] (only aviable with the `rand` feature):
 
 
 ```rust
@@ -35,9 +36,9 @@ let images = vec!["1.jpg", "/usr/share/wallpapers/2.jpg"];
 more_wallpapers::set_wallpapers_from_vec(images, "default.jpg", Mode::Crop)?;
 ```
 
-The `"default.jpg"` is used as wallpaper for [inactive screens][__link10]. If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
+The `"default.jpg"` is used as wallpaper for [inactive screens][__link12]. If you do not know witch value you shoud use here, you can simple use the first elment of the images vec.
 
-For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link11]:
+For advanced wallpaper settings you can use the [`WallpaperBuilder`][__link13]:
 
 
 ```rust
@@ -61,16 +62,18 @@ WallpaperBuilder::new()?.set_wallpapers(|screen| {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG6HCJXnbryuSG3ykvSgqH61mG9YHNoShLGtqG2pUs8cIiq2sYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4yLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG_rTCvlocg5FG4NsVxJZCFQRG0o9IwnJzjjYGz_ns3T7pgtyYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4yLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
- [__link10]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=Screen::active
- [__link11]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/struct.WallpaperBuilder.html
+ [__link10]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=set_wallpapers_from_vec
+ [__link11]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=set_random_wallpapers_from_vec
+ [__link12]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=Screen::active
+ [__link13]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/struct.WallpaperBuilder.html
  [__link2]: https://github.com/LuckyTurtleDev/wallpaper.rs
  [__link3]: https://crates.io/crates/wallpaper
  [__link4]: https://github.com/stoeckmann/xwallpaper
  [__link5]: https://gitlab.freedesktop.org/xorg/app/xrandr
- [__link6]: https://crates.io/crates/wallpaper
- [__link7]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/enum.Environment.html
- [__link8]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=set_wallpapers_from_vec
- [__link9]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=set_random_wallpapers_from_vec
+ [__link6]: https://github.com/stoeckmann/xwallpaper
+ [__link7]: https://gitlab.freedesktop.org/xorg/app/xrandr
+ [__link8]: https://crates.io/crates/wallpaper
+ [__link9]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/enum.Environment.html

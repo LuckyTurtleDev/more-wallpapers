@@ -17,8 +17,9 @@
 //! --- | :---: | :---:| --- |
 //! |Windows                     | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |MacOS                       | ✅ | ❌ | `features=["fallback"]`¹ |
-//! |X11                         | ✅ | ✅ | [xwallpaper], [libxrandr]²|
+//! |X11³                        | ✅ | ✅ | [xwallpaper], [libxrandr]²|
 //! |Budgie(wayland)             | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |Cinnamon⁴                   | ✅ | ✅ | [xwallpaper], [libxrandr]²|
 //! |Deepin(wayland)             | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |GNOME(wayland)              | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |KDE                         | ✅ | ✅ | |
@@ -26,7 +27,9 @@
 //! |Sway                        | ✅ | ❌ | `features=["fallback"]`¹ |
 //!
 //! ¹ Please check also the requirements of the [wallpaper] crate.<br/>
-//! ² normally already installed.
+//! ² Normally already installed.<br/>
+//! ³ Wallpapers will be reset after restart. <br/>
+//! ⁴ Wallpapers will be reset to provided default after restart.
 //!
 //! The information about the currently supported features are also provided by the [`Environment`] enum.
 //!
@@ -182,7 +185,9 @@ impl From<Mode> for fallback::Mode {
 /// Inform about supported features, at the curren environment.
 #[derive(Debug, Clone, Copy, Display, PartialEq, Eq)]
 #[strum(serialize_all = "lowercase")]
+#[non_exhaustive]
 pub enum Environment {
+	Cinnamon,
 	Kde,
 	#[cfg(feature = "fallback")]
 	LinuxFallback,
@@ -196,6 +201,7 @@ impl Environment {
 	///return true, if the current environment does support various wallpaper on each screen
 	pub fn support_various_wallpaper(&self) -> bool {
 		match self {
+			Self::Cinnamon => true,
 			Self::Kde => true,
 			#[cfg(feature = "fallback")]
 			Self::LinuxFallback => false,
@@ -249,12 +255,9 @@ impl WallpaperBuilder {
 		self.environment
 	}
 
-	pub fn screens(&self) -> Vec<String> {
-		let mut screens = Vec::new();
-		for screen in &self.screens {
-			screens.push(screen.name.clone())
-		}
-		screens
+	///Return a vec including all detected Screens
+	pub fn screens(&self) -> &Vec<Screen> {
+		&self.screens
 	}
 
 	///Set background to wallpapers, witch will be selected by the given closure.
