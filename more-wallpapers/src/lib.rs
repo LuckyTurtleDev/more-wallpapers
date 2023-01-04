@@ -18,8 +18,8 @@
 //! |Windows                     | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |MacOS                       | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |X11³                        | ✅ | ✅ | [xwallpaper], [libxrandr]²|
-//! |Cinnamon⁴                   | ✅ | ✅ | [xwallpaper], [libxrandr]²|
 //! |Budgie(wayland)             | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |Cinnamon⁴                   | ✅ | ✅ | [xwallpaper], [libxrandr]²|
 //! |Deepin(wayland)             | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |GNOME(wayland)              | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |KDE                         | ✅ | ✅ | |

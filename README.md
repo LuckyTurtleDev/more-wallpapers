@@ -11,8 +11,8 @@ Currently the following environments are supported:
 | Windows | ✅ | ❌ | `features=["fallback"]`¹ |
 | MacOS | ✅ | ❌ | `features=["fallback"]`¹ |
 | X11³ | ✅ | ✅ | [xwallpaper][__link4], [libxrandr][__link5]² |
-| Cinnamon⁴ | ✅ | ✅ | [xwallpaper][__link6], [libxrandr][__link7]² |
 | Budgie(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
+| Cinnamon⁴ | ✅ | ✅ | [xwallpaper][__link6], [libxrandr][__link7]² |
 | Deepin(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
 | GNOME(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
 | KDE | ✅ | ✅ |  |
@@ -62,7 +62,7 @@ WallpaperBuilder::new()?.set_wallpapers(|screen| {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG8PRSOUeKChRGzvAxjBbCS7kG4lvCcGR7ZK6G9DLWSM1iVadYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4yLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG_rTCvlocg5FG4NsVxJZCFQRG0o9IwnJzjjYGz_ns3T7pgtyYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4yLjFvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.2.1/more_wallpapers/?search=set_wallpapers_from_vec
