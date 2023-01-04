@@ -222,7 +222,7 @@ dependencies = [
 
 [[package]]
 name = "more-wallpapers"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "camino",
  "more-wallpapers-fallback",
