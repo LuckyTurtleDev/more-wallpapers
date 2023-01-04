@@ -102,9 +102,9 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
 			])?;
 		}
 	}
-	//need to set wallpaper multiple time, otherwise cinnamon does overide them
-	//I do not like this solution, but it does work
-	//at least the time constant and is independent from the cinnamon effect speed
+	//need to set wallpaper multiple times, otherwise cinnamon does override them.
+	//I do not like this solution, but it does work.
+	//at least the time is constant and is independent from the cinnamon effect speed
 	if changed {
 		let time = Instant::now();
 		while time.elapsed() < Duration::from_millis(900) {
