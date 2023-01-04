@@ -42,10 +42,7 @@ fn list() -> anyhow::Result<()> {
 		}
 	}
 	println!();
-	print!("all screens:");
-	for screen in builder.screens() {
-		print!(" {}", screen.name);
-	}
+	println!("all screens: {:#?}", builder.screens());
 	println!();
 	Ok(())
 }

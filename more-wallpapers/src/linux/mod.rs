@@ -54,7 +54,7 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 
 pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), WallpaperError> {
 	match builder.environment {
-		Environment::Cinnamon => unimplemented!(),
+		Environment::Cinnamon => cinnamon::set_screens(builder.screens)?,
 		Environment::Kde => kde::set_screens(builder.screens)?,
 		Environment::X11 => x11::set_screens(builder.screens)?,
 		#[cfg(feature = "fallback")]
