@@ -12,7 +12,7 @@ use xrandr;
 #[derive(Debug, Error)]
 pub enum CommandError {
 	#[cfg(target_os = "linux")]
-	#[error("failed to execute command: {0}")]
+	#[error("failed to execute command {0}: {1}")]
 	CommandIO(&'static str, std::io::Error),
 
 	#[cfg(target_os = "linux")]
