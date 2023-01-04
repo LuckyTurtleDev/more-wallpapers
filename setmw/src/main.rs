@@ -35,9 +35,16 @@ fn list() -> anyhow::Result<()> {
 		"support various wallpaper: {}",
 		builder.environment().support_various_wallpaper()
 	);
-	print!("activescreens:");
+	print!("active screens:");
 	for screen in builder.screens() {
-		print!(" {screen}");
+		if screen.active {
+			print!(" {}", screen.name);
+		}
+	}
+	println!();
+	print!("all screens:");
+	for screen in builder.screens() {
+		print!(" {}", screen.name);
 	}
 	println!();
 	Ok(())

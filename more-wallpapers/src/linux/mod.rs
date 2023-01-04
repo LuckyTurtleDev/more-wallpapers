@@ -1,5 +1,7 @@
-use crate::{load_env_var, Environment, WallpaperBuilder, WallpaperError};
+use crate::{error::CommandError, load_env_var, Environment, WallpaperBuilder, WallpaperError};
+use std::{ffi::OsStr, process, process::Command};
 
+mod cinnamon;
 mod kde;
 mod x11;
 
@@ -16,6 +18,9 @@ fn get_environment() -> Result<Environment, WallpaperError> {
 		}
 	}
 	let desktop = load_env_var("XDG_CURRENT_DESKTOP")?.to_lowercase();
+	if desktop.as_str() == "x-cinnamon" {
+		return Ok(Environment::Cinnamon);
+	}
 	if desktop.as_str() == "kde" {
 		return Ok(Environment::Kde);
 	}
@@ -34,6 +39,7 @@ fn get_environment() -> Result<Environment, WallpaperError> {
 pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 	let environment = get_environment()?;
 	let screens = match environment {
+		Environment::Cinnamon => cinnamon::get_screens()?,
 		Environment::Kde => kde::get_screens()?,
 		Environment::X11 => x11::get_screens()?,
 		#[cfg(feature = "fallback")]
@@ -48,6 +54,7 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 
 pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), WallpaperError> {
 	match builder.environment {
+		Environment::Cinnamon => unimplemented!(),
 		Environment::Kde => kde::set_screens(builder.screens)?,
 		Environment::X11 => x11::set_screens(builder.screens)?,
 		#[cfg(feature = "fallback")]
@@ -58,4 +65,29 @@ pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), 
 		Environment::MacOS => panic!(),
 	}
 	Ok(())
+}
+
+/// run a command, check error code and convert the result
+fn run<I, S>(program: &'static str, args: I) -> Result<Vec<u8>, CommandError>
+where
+	I: IntoIterator<Item = S>,
+	S: AsRef<OsStr>,
+{
+	check_command_error(Command::new(program).args(args).output(), program)
+}
+
+/// allow also checking more complex commands
+fn check_command_error(
+	output: Result<process::Output, std::io::Error>,
+	program: &'static str,
+) -> Result<Vec<u8>, CommandError> {
+	let output = output.map_err(|err| CommandError::CommandIO(program, err))?;
+	if !output.status.success() {
+		return Err(CommandError::CommandStatus {
+			command: program,
+			exit_code: output.status.code(),
+			stderr: output.stderr,
+		});
+	}
+	Ok(output.stdout)
 }

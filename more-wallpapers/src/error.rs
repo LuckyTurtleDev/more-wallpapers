@@ -13,13 +13,13 @@ use xrandr;
 pub enum CommandError {
 	#[cfg(target_os = "linux")]
 	#[error("failed to execute command: {0}")]
-	CommandIO(#[from] std::io::Error),
+	CommandIO(&'static str, std::io::Error),
 
 	#[cfg(target_os = "linux")]
-	#[error("{command} exit with code {exit_code}: {stderr:?}")]
+	#[error("{command} exit with code {exit_code:?}: {stderr:?}")]
 	CommandStatus {
 		command: &'static str,
-		exit_code: i32,
+		exit_code: Option<i32>,
 		stderr: Vec<u8>,
 	},
 }
