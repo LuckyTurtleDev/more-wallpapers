@@ -79,7 +79,7 @@ jobs:
             ~/.cargo/git
             ~/.cargo/registry
             target
-          key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}} ${{matrix.features}} ${{ matrix.workspace }}"
+          key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}} ${{matrix.features}} ${{ matrix.workspace }} Lock ${{hashFiles('Cargo.lock')}}"
           restore-keys: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}}"
       - name: Install xrandr
         if:  ${{ matrix.os == 'ubuntu' }}
