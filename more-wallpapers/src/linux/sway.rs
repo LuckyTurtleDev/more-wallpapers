@@ -1,11 +1,7 @@
 use super::check_command_error;
-use crate::{
-	error::{CommandError, WallpaperError},
-	linux::{run, x11},
-	Mode, Screen,
-};
+use crate::{error::WallpaperError, Mode, Screen};
 use serde::Deserialize;
-use std::{io::StdoutLock, process::Command};
+use std::process::Command;
 use strum_macros::{Display, EnumString};
 
 #[derive(Debug, Clone, Copy, EnumString, Display, PartialEq, Eq)]
@@ -45,14 +41,7 @@ impl From<SMode> for Mode {
 #[derive(Deserialize, Debug)]
 struct OutputScreens {
 	name: String,
-	current_mode: OutputMode,
 	active: bool,
-}
-
-#[derive(Deserialize, Debug)]
-struct OutputMode {
-	width: usize,
-	height: usize,
 }
 
 pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {

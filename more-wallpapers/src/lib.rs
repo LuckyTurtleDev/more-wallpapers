@@ -270,7 +270,7 @@ impl WallpaperBuilder {
 		P: AsRef<Utf8Path>,
 		F: FnMut(&Screen) -> (P, Mode),
 	{
-		for mut screen in self.screens.iter_mut() {
+		for screen in self.screens.iter_mut() {
 			let tuple = f(screen);
 			let path = tuple.0.as_ref();
 			let path = path.canonicalize_utf8().context(path)?;
