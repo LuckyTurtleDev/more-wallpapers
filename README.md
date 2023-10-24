@@ -67,7 +67,7 @@ WallpaperBuilder::new()?.set_wallpapers(|screen| {
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.3.0/more_wallpapers/?search=set_wallpapers_from_vec
- [__link11]: `set_random_wallpapers_from_vec()`
+ [__link11]: https://docs.rs/more-wallpapers/0.3.0/more_wallpapers/?search=set_random_wallpapers_from_vec
  [__link12]: https://docs.rs/more-wallpapers/0.3.0/more_wallpapers/?search=Screen::active
  [__link13]: https://docs.rs/more-wallpapers/0.3.0/more_wallpapers/struct.WallpaperBuilder.html
  [__link2]: https://github.com/LuckyTurtleDev/wallpaper.rs
