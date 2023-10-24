@@ -189,6 +189,7 @@ impl From<Mode> for fallback::Mode {
 pub enum Environment {
 	Cinnamon,
 	Kde,
+	Sway,
 	#[cfg(feature = "fallback")]
 	LinuxFallback,
 	#[cfg(feature = "fallback")]
