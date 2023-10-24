@@ -204,6 +204,7 @@ impl Environment {
 		match self {
 			Self::Cinnamon => true,
 			Self::Kde => true,
+			Self::Sway => true,
 			#[cfg(feature = "fallback")]
 			Self::LinuxFallback => false,
 			#[cfg(feature = "fallback")]
