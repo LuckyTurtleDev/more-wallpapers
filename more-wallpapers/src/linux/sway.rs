@@ -16,7 +16,7 @@ struct OutputScreens {
 
 #[derive(Deserialize, Debug)]
 struct OutputMode {
-	widht: usize,
+	width: usize,
 	height: usize,
 }
 
