@@ -10,7 +10,7 @@ use std::{io::StdoutLock, process::Command};
 #[derive(Deserialize, Debug)]
 struct OutputScreens {
 	id: usize,
-	current_mode: String,
+	current_mode: OutputMode,
 	active: bool,
 }
 
