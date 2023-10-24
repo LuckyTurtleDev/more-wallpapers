@@ -3,8 +3,8 @@ use std::{ffi::OsStr, process, process::Command};
 
 mod cinnamon;
 mod kde;
-mod x11;
 mod sway;
+mod x11;
 
 #[cfg(feature = "fallback")]
 mod wallpaper_crate;

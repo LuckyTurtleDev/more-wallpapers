@@ -1,37 +1,34 @@
+use super::check_command_error;
 use crate::{
 	error::{CommandError, WallpaperError},
 	linux::{run, x11},
 	Mode, Screen,
 };
-use std::{process::Command, io::StdoutLock};
-use super::check_command_error;
 use serde::Deserialize;
-
+use std::{io::StdoutLock, process::Command};
 
 #[derive(Deserialize, Debug)]
-struct SawyMsgOutput
-{
-    #[serde(rename(serialize = "all_screens"))]
-    all_screens: Vec<Output_Screen>
+struct OutputScreens {
+	id: usize,
+	current_mode: String,
+	active: bool,
 }
+
 #[derive(Deserialize, Debug)]
-pub struct Output_Screen{
-    name: String,
-    wallpaper: String,
-    mode: String,
-    active: bool,
-    
+struct OutputMode {
+	widht: usize,
+	height: usize,
 }
 
 pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
-    let mut command = Command::new("swaymsg");
-    command.args(["-t", "get_outputs"]);
-    let output = check_command_error(command.output(), "swaymsg")?;
-    let output = String::from_utf8(output).unwrap();
-    println!("{output}");
-    let output: SawyMsgOutput = serde_json::from_str(&output)?;
-    println!("{output:#?}");
-	todo!()//Ok(screens)
+	let mut command = Command::new("swaymsg");
+	command.args(["-t", "get_outputs"]);
+	let output = check_command_error(command.output(), "swaymsg")?;
+	let output = String::from_utf8(output).unwrap();
+	println!("{output}");
+	let output: Vec<OutputScreens> = serde_json::from_str(&output)?;
+	println!("{output:#?}");
+	todo!() //Ok(screens)
 }
 
 pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
