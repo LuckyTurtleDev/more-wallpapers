@@ -38,34 +38,13 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
       - run: cargo publish --package more-wallpapers --token ${{ secrets.CRATES_IO_TOKEN }}
   
-  check:
+  test:
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu, windows, macos]
-        features: ["", --all-features, --features rand, --features fallback]
         rust_version: [stable, 1.62]
-        workspace: [-p more-wallpapers]
-        include:
-          - workspace: -p setmw
-            rust_version: stable
-            os: ubuntu
-          - workspace: -p setmw
-            rust_version: stable
-            os: windows
-          - workspace: -p setmw
-            rust_version: stable
-            os: macos
-        exclude:
-        - os: windows
-          features: --features rand
-        - os: windows
-          features: ""
-        - os: macos
-          features: --features rand
-        - os: macos
-          features: ""
-    name: "${{ matrix.os }} ${{ matrix.rust_version }} ${{ matrix.features }} ${{ matrix.workspace }}"
+    name: "${{ matrix.os }} ${{ matrix.rust_version }}"
     runs-on: ${{ matrix.os }}-latest
     steps:
       - uses: actions/checkout@v3
@@ -73,17 +52,20 @@ jobs:
         with:
           toolchain: ${{ matrix.rust_version }}
         id: "rust-toolchain"
+      - name: install cargo-all-features
+        uses: baptiste0928/cargo-install@v2.0.0
+        with:
+          crate: cargo-all-features
       - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/git
             ~/.cargo/registry
             target
-          key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}} ${{matrix.features}} ${{ matrix.workspace }} Lock ${{hashFiles('Cargo.lock')}}"
-          restore-keys: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}}"
+          key: "${{runner.os}} Rust ${{steps.rust-toolchain.outputs.cachekey}} Lock ${{hashFiles('Cargo.lock')}}"
       - name: Install xrandr
         if:  ${{ matrix.os == 'ubuntu' }}
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev
-      - run: cargo test ${{ matrix.workspace }} ${{ matrix.features }}
+      - run: cargo test-all-features
         env:
           RUST_BACKTRACE: 1
