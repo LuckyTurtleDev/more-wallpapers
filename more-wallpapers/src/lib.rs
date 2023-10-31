@@ -138,14 +138,14 @@ mod linux;
 use crate::linux::*;
 
 #[cfg(all(target_os = "windows", not(feature = "fallback")))]
-std::compile_error!("Windows does need the \"wallpaper\" feature");
+std::compile_error!("Windows does need the 'fallback' feature");
 #[cfg(target_os = "windows")]
 mod windows;
 #[cfg(target_os = "windows")]
 use crate::windows::*;
 
 #[cfg(all(target_os = "macos", not(feature = "fallback")))]
-std::compile_error!("MacOS does need the \"wallpaper\" feature");
+std::compile_error!("MacOS does need the 'fallback' feature");
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(target_os = "macos")]
