@@ -1,4 +1,4 @@
-# more-wallpapers ![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue) [![more-wallpapers on crates.io](https://img.shields.io/crates/v/more-wallpapers)](https://crates.io/crates/more-wallpapers) [![more-wallpapers on docs.rs](https://docs.rs/more-wallpapers/badge.svg)](https://docs.rs/more-wallpapers) [![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/LuckyTurtleDev/more-wallpapers) ![Rust Version: ^1.62](https://img.shields.io/badge/rustc-%5E1.62-orange.svg)
+# more-wallpapers ![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue) [![more-wallpapers on crates.io](https://img.shields.io/crates/v/more-wallpapers)](https://crates.io/crates/more-wallpapers) [![more-wallpapers on docs.rs](https://docs.rs/more-wallpapers/badge.svg)](https://docs.rs/more-wallpapers) [![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/LuckyTurtleDev/more-wallpapers) ![Rust Version: 1.62.0](https://img.shields.io/badge/rustc-1.62.0-orange.svg)
 
 Yet another wallpaper crate, which can set a wallpapers per screen.
 
@@ -17,7 +17,7 @@ Currently the following environments are supported:
 | GNOME(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
 | KDE | ✅ | ✅ |  |
 | Mate(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
-| Sway | ✅ | ❌ | `features=["fallback"]`¹ |
+| Sway | ✅ | ✅ |  |
 
 ¹ Please check also the requirements of the [wallpaper][__link8] crate.<br/> ² Normally already installed.<br/> ³ Wallpapers will be reset after restart. <br/> ⁴ Wallpapers will be reset to provided default after restart.
 
@@ -62,7 +62,8 @@ WallpaperBuilder::new()?.set_wallpapers(|screen| {
 ```
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG_rTCvlocg5FG4NsVxJZCFQRG0o9IwnJzjjYGz_ns3T7pgtyYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4zLjBvbW9yZV93YWxscGFwZXJz
+
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEG_W_Gn_kaocAGwCcVPfenh7eGy6gYLEwyIe4G6-xw_FwcbpjYXKEG7WNg5vbQg0-G2Kkqe08eywGG2qR1qNCmVseG02ad2s_-Wv5YWSBg29tb3JlLXdhbGxwYXBlcnNlMC4zLjBvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
  [__link10]: https://docs.rs/more-wallpapers/0.3.0/more_wallpapers/?search=set_wallpapers_from_vec

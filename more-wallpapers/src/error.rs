@@ -40,7 +40,7 @@ pub enum WallpaperError {
 	Dbus(#[from] rustbus::connection::Error),
 
 	#[cfg(target_os = "linux")]
-	#[error("Dbus error: {0}")]
+	#[error("failed to serialize json output: {0}")]
 	SerdeJson(#[from] serde_json::Error),
 
 	#[cfg(target_os = "linux")]

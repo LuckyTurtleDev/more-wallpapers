@@ -24,7 +24,7 @@
 //! |GNOME(wayland)              | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |KDE                         | ✅ | ✅ | |
 //! |Mate(wayland)               | ✅ | ❌ | `features=["fallback"]`¹ |
-//! |Sway                        | ✅ | ❌ | `features=["fallback"]`¹ |
+//! |Sway                        | ✅ | ✅ |                          |
 //!
 //! ¹ Please check also the requirements of the [wallpaper] crate.<br/>
 //! ² Normally already installed.<br/>
@@ -189,6 +189,7 @@ impl From<Mode> for fallback::Mode {
 pub enum Environment {
 	Cinnamon,
 	Kde,
+	Sway,
 	#[cfg(feature = "fallback")]
 	LinuxFallback,
 	#[cfg(feature = "fallback")]
@@ -203,6 +204,7 @@ impl Environment {
 		match self {
 			Self::Cinnamon => true,
 			Self::Kde => true,
+			Self::Sway => true,
 			#[cfg(feature = "fallback")]
 			Self::LinuxFallback => false,
 			#[cfg(feature = "fallback")]
@@ -268,7 +270,7 @@ impl WallpaperBuilder {
 		P: AsRef<Utf8Path>,
 		F: FnMut(&Screen) -> (P, Mode),
 	{
-		for mut screen in self.screens.iter_mut() {
+		for screen in self.screens.iter_mut() {
 			let tuple = f(screen);
 			let path = tuple.0.as_ref();
 			let path = path.canonicalize_utf8().context(path)?;

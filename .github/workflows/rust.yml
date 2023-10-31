@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: apk add --no-cache libxrandr-dev
-    - run: cargo doc2readme --check --expand-macros --manifest-path more-wallpapers/Cargo.toml
+    - run: cargo doc2readme --check --all-features --expand-macros --manifest-path more-wallpapers/Cargo.toml
   
   cargo_publish:
     if: ${{ github.event_name == 'release' }}

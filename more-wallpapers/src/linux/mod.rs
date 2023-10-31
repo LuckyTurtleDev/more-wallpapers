@@ -3,6 +3,7 @@ use std::{ffi::OsStr, process, process::Command};
 
 mod cinnamon;
 mod kde;
+mod sway;
 mod x11;
 
 #[cfg(feature = "fallback")]
@@ -14,7 +15,7 @@ fn get_environment() -> Result<Environment, WallpaperError> {
 		//if the SWAYSOCK env exist sawy is the active desktop
 		let sway_sock = load_env_var("SWAYSOCK");
 		if sway_sock.is_ok() {
-			return Ok(Environment::LinuxFallback);
+			return Ok(Environment::Sway);
 		}
 	}
 	let desktop = load_env_var("XDG_CURRENT_DESKTOP")?.to_lowercase();
@@ -41,6 +42,7 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 	let screens = match environment {
 		Environment::Cinnamon => cinnamon::get_screens()?,
 		Environment::Kde => kde::get_screens()?,
+		Environment::Sway => sway::get_screens()?,
 		Environment::X11 => x11::get_screens()?,
 		#[cfg(feature = "fallback")]
 		Environment::LinuxFallback => wallpaper_crate::get_screens(),
@@ -56,6 +58,7 @@ pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), 
 	match builder.environment {
 		Environment::Cinnamon => cinnamon::set_screens(builder.screens)?,
 		Environment::Kde => kde::set_screens(builder.screens)?,
+		Environment::Sway => sway::set_screens(builder.screens)?,
 		Environment::X11 => x11::set_screens(builder.screens)?,
 		#[cfg(feature = "fallback")]
 		Environment::LinuxFallback => wallpaper_crate::set_screens(builder.screens)?,
