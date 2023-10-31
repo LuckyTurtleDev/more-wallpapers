@@ -27,7 +27,7 @@ jobs:
   
   cargo_publish:
     if: ${{ github.event_name == 'release' }}
-    needs: [rustfmt, doc2readme, check]
+    needs: [rustfmt, doc2readme, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
