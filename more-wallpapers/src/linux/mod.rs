@@ -5,6 +5,7 @@ mod cinnamon;
 mod kde;
 mod sway;
 mod x11;
+mod xfce;
 
 #[cfg(feature = "fallback")]
 mod wallpaper_crate;
