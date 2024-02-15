@@ -57,6 +57,10 @@ pub enum WallpaperError {
 
 	#[error("{0:?} {1}")]
 	IOError(String, io::Error),
+
+	#[cfg(target_os = "linux")]
+	#[error("Unknow XFCE wallpaper mode {0:?}")]
+	UnknownMode(String),
 }
 
 pub(crate) trait Context<V> {
