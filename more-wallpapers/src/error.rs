@@ -1,6 +1,6 @@
 #[cfg(target_os = "linux")]
 use std::env;
-use std::io;
+use std::{ffi::OsString, io, process::Command};
 use thiserror::Error;
 
 #[cfg(target_os = "linux")]
@@ -12,13 +12,13 @@ use xrandr;
 #[derive(Debug, Error)]
 pub enum CommandError {
 	#[cfg(target_os = "linux")]
-	#[error("failed to execute command {0}: {1}")]
-	CommandIO(&'static str, std::io::Error),
+	#[error("failed to execute program {0:?}: {1}")]
+	CommandIO(OsString, std::io::Error),
 
 	#[cfg(target_os = "linux")]
-	#[error("{command} exit with code {exit_code:?}: {stderr:?}")]
+	#[error("{command:?} exit with code {exit_code:?}:\n{}", String::from_utf8_lossy(.stderr))]
 	CommandStatus {
-		command: &'static str,
+		command: Command,
 		exit_code: Option<i32>,
 		stderr: Vec<u8>,
 	},
@@ -57,6 +57,10 @@ pub enum WallpaperError {
 
 	#[error("{0:?} {1}")]
 	IOError(String, io::Error),
+
+	#[cfg(target_os = "linux")]
+	#[error("Unknow XFCE wallpaper mode {0:?}")]
+	UnknownMode(String),
 }
 
 pub(crate) trait Context<V> {
