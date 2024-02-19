@@ -81,7 +81,11 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
 	fn set_key<P: AsRef<OsStr>>(key: String, property: P) -> Result<(), WallpaperError> {
 		let mut command = Command::new("xfconf-query");
-		command.args(["--channel", "xfce4-desktop", "--set"]).arg(key).arg(property);
+		command
+			.args(["--channel", "xfce4-desktop", "-p"])
+			.arg(key)
+			.arg("-s")
+			.arg(property);
 		run_command(command)?;
 		Ok(())
 	}
