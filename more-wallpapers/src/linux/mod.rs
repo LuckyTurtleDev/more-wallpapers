@@ -88,9 +88,7 @@ where
 }
 
 /// allow also checking more complex commands
-fn run_command(
-	mut command: Command,
-) -> Result<Vec<u8>, CommandError> {
+fn run_command(mut command: Command) -> Result<Vec<u8>, CommandError> {
 	let output = command.output();
 	let output = output.map_err(|err| CommandError::CommandIO(command.get_program().into(), err))?;
 	if !output.status.success() {
