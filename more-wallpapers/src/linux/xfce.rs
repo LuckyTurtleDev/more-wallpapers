@@ -79,7 +79,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 }
 
 pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
-	fn set_key<P: AsRef<OsStr>>(key: String, property: P) -> Result<(), WallpaperError> {
+	fn set_key<P: AsRef<OsStr>>(key: &str, property: P) -> Result<(), WallpaperError> {
 		let mut command = Command::new("xfconf-query");
 		command
 			.args(["--channel", "xfce4-desktop", "-p"])
@@ -90,9 +90,10 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
 		Ok(())
 	}
 
+	//set_key("/backdrop/single-workspace-mode", "false")?; //force different wallpaper per workscreen
 	for screen in screens {
 		let key = format!("/backdrop/{}/last-image", screen.name);
-		set_key(key, &screen.wallpaper.unwrap())?;
+		set_key(&key, &screen.wallpaper.unwrap())?;
 		let mode: u8 = match screen.mode.unwrap() {
 			Mode::Center => 1,
 			Mode::Tile => 2,
@@ -101,7 +102,7 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
 			Mode::Crop => 5,
 		};
 		let key = format!("/backdrop/{}/image-style", screen.name);
-		set_key(key, format!("{mode}"))?;
+		set_key(&key, format!("{mode}"))?;
 	}
 	Ok(())
 }
