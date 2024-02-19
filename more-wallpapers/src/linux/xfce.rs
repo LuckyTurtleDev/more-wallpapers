@@ -6,7 +6,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 	fn load_property(property: &str) -> Result<String, WallpaperError> {
 		let mut command = Command::new("xfconf-query");
 		command.args(["--channel", "xfce4-desktop", "-p"]);
-		command.arg(property);
+		command.arg(format!("/backdrop/{property}"));
 		let output = run_command(command)?;
 		let output = String::from_utf8(output).unwrap();
 		Ok(output)
