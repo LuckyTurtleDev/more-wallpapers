@@ -50,11 +50,7 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 		Environment::X11 => x11::get_screens()?,
 		Environment::Xfce => xfce::get_screens()?,
 		#[cfg(feature = "fallback")]
-		Environment::LinuxFallback => wallpaper_crate::get_screens(),
-		#[cfg(feature = "fallback")]
-		Environment::Windows => panic!(),
-		#[cfg(feature = "fallback")]
-		Environment::MacOS => panic!(),
+		Environment::LinuxFallback => wallpaper_crate::get_screens()
 	};
 	Ok(WallpaperBuilder { environment, screens })
 }
@@ -67,11 +63,7 @@ pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), 
 		Environment::X11 => x11::set_screens(builder.screens)?,
 		Environment::Xfce => xfce::set_screens(builder.screens)?,
 		#[cfg(feature = "fallback")]
-		Environment::LinuxFallback => wallpaper_crate::set_screens(builder.screens)?,
-		#[cfg(feature = "fallback")]
-		Environment::Windows => panic!(),
-		#[cfg(feature = "fallback")]
-		Environment::MacOS => panic!(),
+		Environment::LinuxFallback => wallpaper_crate::set_screens(builder.screens)?
 	}
 	Ok(())
 }

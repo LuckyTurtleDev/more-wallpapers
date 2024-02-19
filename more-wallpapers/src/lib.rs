@@ -188,32 +188,42 @@ impl From<Mode> for fallback::Mode {
 #[strum(serialize_all = "lowercase")]
 #[non_exhaustive]
 pub enum Environment {
+	#[cfg(target_os = "linux")]
 	Cinnamon,
+	#[cfg(target_os = "linux")]
 	Kde,
+	#[cfg(target_os = "linux")]
 	Sway,
-	#[cfg(feature = "fallback")]
+	#[cfg(all(target_os = "linux", feature = "fallback"))]
 	LinuxFallback,
-	#[cfg(feature = "fallback")]
+	#[cfg(all(target_os = "macos", feature = "fallback"))]
 	MacOS,
-	#[cfg(feature = "fallback")]
+	#[cfg(all(target_os = "windows", feature = "fallback"))]
 	Windows,
+	#[cfg(target_os = "linux")]
 	X11,
+	#[cfg(target_os = "linux")]
 	Xfce,
 }
 impl Environment {
 	///return true, if the current environment does support various wallpaper on each screen
 	pub fn support_various_wallpaper(&self) -> bool {
 		match self {
+			#[cfg(target_os = "linux")]
 			Self::Cinnamon => true,
+			#[cfg(target_os = "linux")]
 			Self::Kde => true,
+			#[cfg(target_os = "linux")]
 			Self::Sway => true,
-			#[cfg(feature = "fallback")]
+			#[cfg(all(target_os = "linux", feature = "fallback"))]
 			Self::LinuxFallback => false,
-			#[cfg(feature = "fallback")]
+			#[cfg(all(target_os = "macos", feature = "fallback"))]
 			Self::MacOS => false,
-			#[cfg(feature = "fallback")]
+			#[cfg(all(target_os = "windows", feature = "fallback"))]
 			Self::Windows => false,
+			#[cfg(target_os = "linux")]
 			Self::X11 => true,
+			#[cfg(target_os = "linux")]
 			Self::Xfce => true,
 		}
 	}
