@@ -18,6 +18,7 @@ Currently the following environments are supported:
 | KDE | ✅ | ✅ |  |
 | Mate(wayland) | ✅ | ❌ | `features=["fallback"]`¹ |
 | Sway | ✅ | ✅ |  |
+| XFCE | ✅ | ✅ |  |
 
 ¹ Please check also the requirements of the [wallpaper][__link8] crate.<br/> ² Normally already installed.<br/> ³ Wallpapers will be reset after restart. <br/> ⁴ Wallpapers will be reset to provided default after restart.
 
