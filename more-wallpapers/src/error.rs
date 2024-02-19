@@ -16,7 +16,7 @@ pub enum CommandError {
 	CommandIO(&'static str, std::io::Error),
 
 	#[cfg(target_os = "linux")]
-	#[error("{command} exit with code {exit_code:?}: {stderr:?}")]
+	#[error("{command:?} exit with code {exit_code:?}:\n{}", String::from_utf8_lossy(.stderr))]
 	CommandStatus {
 		command: &'static str,
 		exit_code: Option<i32>,

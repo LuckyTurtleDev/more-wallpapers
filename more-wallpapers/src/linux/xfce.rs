@@ -33,7 +33,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 		let first = split.next();
 		let second = split.next();
 		let third = split.next();
-		let fourth  = split.next();
+		let fourth = split.next();
 		if split.next().is_some() {
 			//to long -> wrong key
 			continue;
@@ -49,7 +49,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 		} else {
 			(format!("{}/{}", first, second), third, false)
 		};
-		if !(key_type == "last_image" || key_type == "image_style") {
+		if !(key_type == "last-image" || key_type == "image-style") {
 			// wrong key
 			continue;
 		}
@@ -60,7 +60,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 			mode: None,
 			active,
 		});
-		if key_type == "last_image" {
+		if key_type == "last-image" {
 			screen.wallpaper = Some(value.into());
 		} else {
 			let mode = match value.as_str() {
