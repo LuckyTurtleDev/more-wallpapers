@@ -197,6 +197,7 @@ pub enum Environment {
 	#[cfg(feature = "fallback")]
 	Windows,
 	X11,
+	Xfce,
 }
 impl Environment {
 	///return true, if the current environment does support various wallpaper on each screen
@@ -212,6 +213,7 @@ impl Environment {
 			#[cfg(feature = "fallback")]
 			Self::Windows => false,
 			Self::X11 => true,
+			Self::Xfce => true,
 		}
 	}
 }

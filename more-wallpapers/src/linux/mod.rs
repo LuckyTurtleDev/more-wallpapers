@@ -26,12 +26,15 @@ fn get_environment() -> Result<Environment, WallpaperError> {
 	if desktop.as_str() == "kde" {
 		return Ok(Environment::Kde);
 	}
+	if desktop.as_str() == "xfce" {
+		return Ok(Environment::Xfce);
+	}
 	let sessinon_type = load_env_var("XDG_SESSION_TYPE")?.to_lowercase();
 	match sessinon_type.as_str() {
 		"x11" => Ok(Environment::X11),
 		#[cfg(feature = "fallback")]
 		"wayland" => match desktop.as_str() {
-			"budgie:gnome" | "deepin" | "gnome" | "lxde" | "mate" | "xfce" => Ok(Environment::LinuxFallback),
+			"budgie:gnome" | "deepin" | "gnome" | "lxde" | "mate" => Ok(Environment::LinuxFallback),
 			_ => Err(WallpaperError::Unsuported(format!("{desktop} ({sessinon_type})"))),
 		},
 		_ => Err(WallpaperError::Unsuported(format!("{desktop} ({sessinon_type})"))),
@@ -45,6 +48,7 @@ pub(crate) fn get_builder() -> Result<WallpaperBuilder, WallpaperError> {
 		Environment::Kde => kde::get_screens()?,
 		Environment::Sway => sway::get_screens()?,
 		Environment::X11 => x11::get_screens()?,
+		Environment::Xfce => xfce::get_screens()?,
 		#[cfg(feature = "fallback")]
 		Environment::LinuxFallback => wallpaper_crate::get_screens(),
 		#[cfg(feature = "fallback")]
@@ -61,6 +65,7 @@ pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), 
 		Environment::Kde => kde::set_screens(builder.screens)?,
 		Environment::Sway => sway::set_screens(builder.screens)?,
 		Environment::X11 => x11::set_screens(builder.screens)?,
+		Environment::Xfce => xfce::set_screens(builder.screens)?,
 		#[cfg(feature = "fallback")]
 		Environment::LinuxFallback => wallpaper_crate::set_screens(builder.screens)?,
 		#[cfg(feature = "fallback")]

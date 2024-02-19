@@ -1,6 +1,6 @@
 use super::check_command_error;
 use crate::{error::CommandError, load_env_var, Environment, Mode, Screen, WallpaperBuilder, WallpaperError};
-use std::{collections::HashMap, process::Command};
+use std::{collections::HashMap, ffi::OsStr, process::Command};
 
 fn load_property(property: &str) -> Result<String, WallpaperError> {
 	let mut command = Command::new("xfconf-query");
@@ -75,4 +75,28 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 		}
 	}
 	Ok(screens.into_values().collect())
+}
+
+pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
+	fn set_key<P: AsRef<OsStr>>(key: String, property: P) -> Result<(), WallpaperError> {
+		let mut command = Command::new("xfconf-query");
+		command.args(["--channel", "xfce4-desktop", "--set"]).arg(key).arg(property);
+		check_command_error(command.output(), "xfconf-query")?;
+		Ok(())
+	}
+
+	for screen in screens {
+		let key = format!("/backdrop/{}/last_image", screen.name);
+		set_key(key, &screen.wallpaper.unwrap())?;
+		let mode: u8 = match screen.mode.unwrap() {
+			Mode::Center => 1,
+			Mode::Tile => 2,
+			Mode::Stretch => 3,
+			Mode::Fit => 4,
+			Mode::Crop => 5,
+		};
+		let key = format!("/backdrop/{}/image_style", screen.name);
+		set_key(key, format!("{mode}"))?;
+	}
+	Ok(())
 }
