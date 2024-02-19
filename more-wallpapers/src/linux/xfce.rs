@@ -63,7 +63,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 		if key_type == "last-image" {
 			screen.wallpaper = Some(value.into());
 		} else {
-			let mode = match value.as_str() {
+			let mode = match value.trim_end() {
 				"0" => None, //single color background is used instead of a image
 				"1" => Some(Mode::Center),
 				"2" => Some(Mode::Tile),
