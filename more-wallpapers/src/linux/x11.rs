@@ -1,4 +1,4 @@
-use crate::{error::CommandError, linux::check_command_error, Mode, Screen};
+use crate::{error::CommandError, linux::run_command, Mode, Screen};
 use std::process::Command;
 
 pub(crate) fn get_screens() -> Result<Vec<Screen>, xrandr::XrandrError> {
@@ -34,6 +34,6 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), CommandError> {
 			screen.wallpaper.as_ref().unwrap().as_str(),
 		]);
 	}
-	check_command_error(command.output(), "xwallpaper")?;
+	run_command(command)?;
 	Ok(())
 }

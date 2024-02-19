@@ -1,12 +1,12 @@
-use super::check_command_error;
-use crate::{error::CommandError, load_env_var, Environment, Mode, Screen, WallpaperBuilder, WallpaperError};
+use super::run_command;
+use crate::{Mode, Screen, WallpaperError};
 use std::{collections::HashMap, ffi::OsStr, process::Command};
 
 fn load_property(property: &str) -> Result<String, WallpaperError> {
 	let mut command = Command::new("xfconf-query");
 	command.args(["--channel", "xfce4-desktop", "p"]);
 	command.arg(property);
-	let output = check_command_error(command.output(), "xfconf-query")?;
+	let output = run_command(command)?;
 	let output = String::from_utf8(output).unwrap();
 	Ok(output)
 }
@@ -14,7 +14,7 @@ fn load_property(property: &str) -> Result<String, WallpaperError> {
 pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 	let mut command = Command::new("xfconf-query");
 	command.args(["--channel", "xfce4-desktop", "--list"]);
-	let output = check_command_error(command.output(), "xfconf-query")?;
+	let output = run_command(command)?;
 	let output = String::from_utf8(output).unwrap();
 	//	the outpult looks like the following:
 	//
@@ -82,7 +82,7 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
 	fn set_key<P: AsRef<OsStr>>(key: String, property: P) -> Result<(), WallpaperError> {
 		let mut command = Command::new("xfconf-query");
 		command.args(["--channel", "xfce4-desktop", "--set"]).arg(key).arg(property);
-		check_command_error(command.output(), "xfconf-query")?;
+		run_command(command)?;
 		Ok(())
 	}
 

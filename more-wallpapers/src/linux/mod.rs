@@ -1,5 +1,5 @@
 use crate::{error::CommandError, load_env_var, Environment, WallpaperBuilder, WallpaperError};
-use std::{ffi::OsStr, process, process::Command};
+use std::{ffi::OsStr, process::Command};
 
 mod cinnamon;
 mod kde;
@@ -77,23 +77,25 @@ pub(crate) fn set_screens_from_builder(builder: WallpaperBuilder) -> Result<(), 
 }
 
 /// run a command, check error code and convert the result
-fn run<I, S>(program: &'static str, args: I) -> Result<Vec<u8>, CommandError>
+fn run<I, S>(program: &str, args: I) -> Result<Vec<u8>, CommandError>
 where
 	I: IntoIterator<Item = S>,
 	S: AsRef<OsStr>,
 {
-	check_command_error(Command::new(program).args(args).output(), program)
+	let mut command = Command::new(program);
+	command.args(args);
+	run_command(command)
 }
 
 /// allow also checking more complex commands
-fn check_command_error(
-	output: Result<process::Output, std::io::Error>,
-	program: &'static str,
+fn run_command(
+	mut command: Command,
 ) -> Result<Vec<u8>, CommandError> {
-	let output = output.map_err(|err| CommandError::CommandIO(program, err))?;
+	let output = command.output();
+	let output = output.map_err(|err| CommandError::CommandIO(command.get_program().into(), err))?;
 	if !output.status.success() {
 		return Err(CommandError::CommandStatus {
-			command: program,
+			command,
 			exit_code: output.status.code(),
 			stderr: output.stderr,
 		});
