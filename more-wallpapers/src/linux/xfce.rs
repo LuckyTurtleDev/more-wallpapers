@@ -33,20 +33,21 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 		let first = split.next();
 		let second = split.next();
 		let third = split.next();
+		let fourth  = split.next();
 		if split.next().is_some() {
 			//to long -> wrong key
 			continue;
 		}
-		let (Some(first), Some(second)) = (first, second) else {
+		let (Some(first), Some(second), Some(third)) = (first, second, third) else {
 			//to short -> wrong key
 			continue;
 		};
-		let (screen_name, key_type, active) = if let Some(third) = third {
-			// if name exist out of two part, the screen is active.
+		let (screen_name, key_type, active) = if let Some(fourth) = fourth {
+			// if name exist out of  part, the screen is active.
 			// Otherwise it is default for new workspaces
-			(format!("{}/{}", first, second), third, true)
+			(format!("{}/{}/{}", first, second, third), fourth, true)
 		} else {
-			(first.to_owned(), second, false)
+			(format!("{}/{}", first, second), third, false)
 		};
 		if !(key_type == "last_image" || key_type == "image_style") {
 			// wrong key
