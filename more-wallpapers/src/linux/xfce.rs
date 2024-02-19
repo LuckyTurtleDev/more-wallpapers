@@ -35,11 +35,11 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 		let third = split.next();
 		if split.next().is_some() {
 			//to long -> wrong key
-			break;
+			continue;
 		}
 		let (Some(first), Some(second)) = (first, second) else {
 			//to short -> wrong key
-			break;
+			continue;
 		};
 		let (screen_name, key_type, active) = if let Some(third) = third {
 			// if name exist out of two part, the screen is active.
@@ -50,7 +50,7 @@ pub(crate) fn get_screens() -> Result<Vec<Screen>, WallpaperError> {
 		};
 		if !(key_type == "last_image" || key_type == "image_style") {
 			// wrong key
-			break;
+			continue;
 		}
 		let value = load_property(line)?;
 		let screen = screens.entry(screen_name.clone()).or_insert_with(|| Screen {
