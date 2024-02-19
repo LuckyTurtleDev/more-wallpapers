@@ -25,6 +25,7 @@
 //! |KDE                         | ✅ | ✅ | |
 //! |Mate(wayland)               | ✅ | ❌ | `features=["fallback"]`¹ |
 //! |Sway                        | ✅ | ✅ |                          |
+//! |XFCE                        | ✅ | ✅ |                          |
 //!
 //! ¹ Please check also the requirements of the [wallpaper] crate.<br/>
 //! ² Normally already installed.<br/>
