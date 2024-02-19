@@ -91,7 +91,7 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
 	}
 
 	for screen in screens {
-		let key = format!("/backdrop/{}/last_image", screen.name);
+		let key = format!("/backdrop/{}/last-image", screen.name);
 		set_key(key, &screen.wallpaper.unwrap())?;
 		let mode: u8 = match screen.mode.unwrap() {
 			Mode::Center => 1,
@@ -100,7 +100,7 @@ pub(crate) fn set_screens(screens: Vec<Screen>) -> Result<(), WallpaperError> {
 			Mode::Fit => 4,
 			Mode::Crop => 5,
 		};
-		let key = format!("/backdrop/{}/image_style", screen.name);
+		let key = format!("/backdrop/{}/image-style", screen.name);
 		set_key(key, format!("{mode}"))?;
 	}
 	Ok(())
