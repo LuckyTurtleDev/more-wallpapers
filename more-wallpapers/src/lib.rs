@@ -124,13 +124,12 @@ println!("background was set to the following wallpapers {used_wallpapers:?}");
 mod error;
 
 use camino::{Utf8Path, Utf8PathBuf};
-use std::io;
-use strum_macros::{Display, EnumString};
-pub use error::CommandError;
-pub use error::WallpaperError;
 #[cfg(target_os = "linux")]
 use error::load_env_var;
 use error::Context;
+pub use error::{CommandError, WallpaperError};
+use std::io;
+use strum_macros::{Display, EnumString};
 
 #[cfg(feature = "rand")]
 use rand::{prelude::IteratorRandom, seq::SliceRandom};
