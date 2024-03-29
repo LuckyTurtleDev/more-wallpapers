@@ -1,7 +1,8 @@
 #[cfg(target_os = "linux")]
 use std::env;
+use std::io;
 #[cfg(target_os = "linux")]
-use std::{ffi::OsString, io, process::Command};
+use std::{ffi::OsString, process::Command};
 use thiserror::Error;
 
 #[cfg(target_os = "linux")]
@@ -70,6 +71,7 @@ pub(crate) trait Context<V> {
 		C: std::fmt::Display;
 }
 
+/// add path as additional info to erro and convert it to a [WallpaperError].
 impl<V> Context<V> for Result<V, io::Error> {
 	fn context<C>(self, context: C) -> Result<V, WallpaperError>
 	where
