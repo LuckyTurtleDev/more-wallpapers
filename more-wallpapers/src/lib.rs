@@ -126,8 +126,10 @@ mod error;
 use camino::{Utf8Path, Utf8PathBuf};
 #[cfg(target_os = "linux")]
 use error::load_env_var;
+#[cfg(target_os = "linux")]
+pub use error::CommandError;
 use error::Context;
-pub use error::{CommandError, WallpaperError};
+pub use error::WallpaperError;
 use std::io;
 use strum_macros::{Display, EnumString};
 
