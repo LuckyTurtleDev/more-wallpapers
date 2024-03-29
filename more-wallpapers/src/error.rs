@@ -1,5 +1,6 @@
 #[cfg(target_os = "linux")]
 use std::env;
+#[cfg(target_os = "linux")]
 use std::{ffi::OsString, io, process::Command};
 use thiserror::Error;
 
