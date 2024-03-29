@@ -64,13 +64,13 @@ WallpaperBuilder::new()?.set_wallpapers(|screen| {
 
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEG_W_Gn_kaocAGwCcVPfenh7eGy6gYLEwyIe4G6-xw_FwcbpjYXKEG9GIfJPZsn4fG2Jv3ZDwtk2wG3mXKLFhqSX8G07FLfx08l7TYWSBg29tb3JlLXdhbGxwYXBlcnNlMC4zLjFvbW9yZV93YWxscGFwZXJz
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEG_W_Gn_kaocAGwCcVPfenh7eGy6gYLEwyIe4G6-xw_FwcbpjYXKEG9GIfJPZsn4fG2Jv3ZDwtk2wG3mXKLFhqSX8G07FLfx08l7TYWSBg29tb3JlLXdhbGxwYXBlcnNlMC40LjBvbW9yZV93YWxscGFwZXJz
  [__link0]: https://crates.io/crates/wallpaper
  [__link1]: https://crates.io/crates/wall
- [__link10]: https://docs.rs/more-wallpapers/0.3.1/more_wallpapers/?search=set_wallpapers_from_vec
- [__link11]: https://docs.rs/more-wallpapers/0.3.1/more_wallpapers/?search=set_random_wallpapers_from_vec
- [__link12]: https://docs.rs/more-wallpapers/0.3.1/more_wallpapers/?search=Screen::active
- [__link13]: https://docs.rs/more-wallpapers/0.3.1/more_wallpapers/struct.WallpaperBuilder.html
+ [__link10]: https://docs.rs/more-wallpapers/0.4.0/more_wallpapers/?search=set_wallpapers_from_vec
+ [__link11]: `set_random_wallpapers_from_vec()`
+ [__link12]: https://docs.rs/more-wallpapers/0.4.0/more_wallpapers/?search=Screen::active
+ [__link13]: https://docs.rs/more-wallpapers/0.4.0/more_wallpapers/struct.WallpaperBuilder.html
  [__link2]: https://github.com/LuckyTurtleDev/wallpaper.rs
  [__link3]: https://crates.io/crates/wallpaper
  [__link4]: https://github.com/stoeckmann/xwallpaper
@@ -78,4 +78,4 @@ WallpaperBuilder::new()?.set_wallpapers(|screen| {
  [__link6]: https://github.com/stoeckmann/xwallpaper
  [__link7]: https://gitlab.freedesktop.org/xorg/app/xrandr
  [__link8]: https://crates.io/crates/wallpaper
- [__link9]: https://docs.rs/more-wallpapers/0.3.1/more_wallpapers/enum.Environment.html
+ [__link9]: https://docs.rs/more-wallpapers/0.4.0/more_wallpapers/enum.Environment.html
